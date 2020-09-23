@@ -1,0 +1,24 @@
+{
+  "name": "indico-slack-bot",
+  "version": "1.0.0",
+  "description": "Bot that sends daily updates of Indico events to Slack.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lizlove/indico-slack-bot.git"
+  },
+  "author": "Elizabeth Lovero",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/lizlove/indico-slack-bot/issues"
+  },
+  "homepage": "https://github.com/lizlove/indico-slack-bot#readme",
+  "dependencies": {
+    "@slack/bolt": "^2.3.0",
+    "dotenv": "^8.2.0"
+  }
+}
