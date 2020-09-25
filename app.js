@@ -25,8 +25,8 @@ app.command('/indico', async ({
 }) => {
   // Acknowledge command request
   await ack();
-
-  await say(`${command.text}`);
+  const reverse = command.text.split("").reverse().join("");
+  await say(`${reverse}`);
 });
 
 (async () => {
