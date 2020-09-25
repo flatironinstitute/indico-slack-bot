@@ -18,18 +18,18 @@ function parseIncomingSlack(message) {
  * @return {string} block Formatted time string.
  */
 function formatTime(time) {
-  let arr = time.split(':');
+  const arr = time.split(':');
   let ftime = '';
   if (arr[0] == 12) {
     arr[2] = 'PM';
   } else if (arr[0] > 12) {
-    arr[0] = arr[0] - 12;
+    arr[0] -= 12;
     arr[2] = 'PM';
   } else {
     arr[2] = 'AM';
   }
   if (arr[1] == '00') {
-    ftime = arr[0] + ' ' + arr[2];
+    ftime = `${arr[0]} ${arr[2]}`;
   } else {
     ftime = `${arr[0]}:${arr[1]} ${arr[2]}`;
   }

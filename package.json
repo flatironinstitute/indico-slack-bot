@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node app.js",
+    "lint": "eslint \"**/*.js\" --fix",
+    "lint:silent": "eslint \"**/*.{js,ts}\" --quiet --fix"
   },
   "repository": {
     "type": "git",
@@ -22,5 +24,10 @@
     "chrono-node": "^2.1.8",
     "dotenv": "^8.2.0",
     "moment": "^2.29.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.22.0"
   }
 }
