@@ -1,9 +1,6 @@
 import moment from 'moment';
 import axios from 'axios';
-import {
-  logError
-} from './utils';
-
+import { logError } from './utils';
 /**
  * Queries Indico API for event info by date.
  * @param {string} day Date in ISO format.
@@ -17,6 +14,4 @@ async function queryIndicoByDate(day) {
   return res.data;
 }
 
-export default {
-  queryIndicoByDate
-};
+export default { queryIndicoByDate };

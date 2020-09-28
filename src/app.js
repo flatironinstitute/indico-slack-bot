@@ -1,10 +1,6 @@
-import {
-  parseIncomingDate
-} from './utils';
+import { parseIncomingDate } from './utils';
 
-const {
-  App
-} = require('@slack/bolt');
+const { App } = require('@slack/bolt');
 require('dotenv').config();
 
 // Initialize app
@@ -13,19 +9,12 @@ const app = new App({
   signingSecret: process.env.SLACK_SIGNING_SECRET
 });
 
-app.message('hello', async ({
-  message,
-  say
-}) => {
+app.message('hello', async ({ message, say }) => {
   await say(`Hey there <@${message.user}>!`);
 });
 
 // The echo command simply echoes on command
-app.command('/indico', async ({
-  command,
-  ack,
-  client
-}) => {
+app.command('/indico', async ({ command, ack, client }) => {
   // Acknowledge command request
   await ack();
   const day = parseIncomingDate(command.text);
