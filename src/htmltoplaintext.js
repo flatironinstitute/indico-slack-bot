@@ -113,7 +113,10 @@ function convert(htmlText) {
                 listIndentionTabs - String(liIndex).length
               )}`;
             }
-            return ` < br / > ${uIndention}`;
+            return ` < br / > $ {
+        uIndention
+      }
+      `;
           });
           return plainListLine;
         }
@@ -205,4 +208,6 @@ function convert(htmlText) {
   return tmp;
 }
 
-export default { convert };
+export default {
+  convert
+};
