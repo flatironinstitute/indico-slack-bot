@@ -205,6 +205,4 @@ function convert(htmlText) {
   return tmp;
 }
 
-export default {
-  convert,
-};
+export default { convert };

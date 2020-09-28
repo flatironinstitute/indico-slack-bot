@@ -1,7 +1,13 @@
+# TODO:
+
 1. Move over chronjob
-2. ESLINT
-3. Babel / packaging
-4. Tests
-5. Indico properties
-6. This ugly formatting
-7. Replace moment.js see https://momentjs.com/docs/
+2. Babel / packaging
+3. Tests
+4. Indico properties
+5. This ugly formatting
+6. Replace moment.js see https://momentjs.com/docs/
+7. Add pre-commit linting hooks.
+
+# Done
+
+- ESLint

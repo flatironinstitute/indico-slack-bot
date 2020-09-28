@@ -7,7 +7,7 @@ import * as chrono from 'chrono-node';
  */
 function parseIncomingSlack(message) {
   const day = chrono.parseDate(message, new Date(), {
-    forwardDate: true,
+    forwardDate: true
   });
   return day;
 }
@@ -20,7 +20,7 @@ function parseIncomingSlack(message) {
 function formatTime(time) {
   const arr = time.split(':');
   let ftime = '';
-  if (arr[0] == 12) {
+  if (arr[0] === 12) {
     arr[2] = 'PM';
   } else if (arr[0] > 12) {
     arr[0] -= 12;
@@ -28,7 +28,7 @@ function formatTime(time) {
   } else {
     arr[2] = 'AM';
   }
-  if (arr[1] == '00') {
+  if (arr[1] === '00') {
     ftime = `${arr[0]} ${arr[2]}`;
   } else {
     ftime = `${arr[0]}:${arr[1]} ${arr[2]}`;
