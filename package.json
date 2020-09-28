@@ -21,6 +21,7 @@
   "homepage": "https://github.com/lizlove/indico-slack-bot#readme",
   "dependencies": {
     "@slack/bolt": "^2.3.0",
+    "axios": "^0.20.0",
     "chrono-node": "^2.1.8",
     "dotenv": "^8.2.0",
     "moment": "^2.29.0"

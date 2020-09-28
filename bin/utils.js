@@ -5,7 +5,7 @@ import * as chrono from 'chrono-node';
  * @param {string} message The string from slack command.
  * @return {string} day Date in ISO format or null if not found.
  */
-function parseIncomingSlack(message) {
+function parseIncomingDate(message) {
   const day = chrono.parseDate(message, new Date(), {
     forwardDate: true
   });
@@ -36,4 +36,26 @@ function formatTime(time) {
   return ftime;
 }
 
-export { parseIncomingSlack, formatTime };
+/**
+ * Standard error logging function.
+ * @param {any} error Any error function.
+ */
+function logError(error) {
+  /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
+  console.error('⚠️ Error: ', error);
+  throw new Error(error);
+}
+
+/**
+ * Wraps async functions to abstract out try/catch.
+ * @param {function} fn Any asyncronous function.
+ * @return {array} [res, err] Either response or error and undefined.
+ */
+const catchErrors = (fn) => {
+  // eslint-disable-next-line prettier/prettier
+  return fn
+    .then((res) => [res, undefined])
+    .catch((error) => Promise.resolve([undefined, error]));
+};
+
+export { parseIncomingDate, formatTime, logError, catchErrors };

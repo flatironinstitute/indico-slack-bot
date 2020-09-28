@@ -1,3 +1,5 @@
+import { parseIncomingDate } from './bin/utils';
+
 const { App } = require('@slack/bolt');
 require('dotenv').config();
 
@@ -12,11 +14,12 @@ app.message('hello', async ({ message, say }) => {
 });
 
 // The echo command simply echoes on command
-app.command('/indico', async ({ command, ack, say }) => {
+app.command('/indico', async ({ command, ack, client }) => {
   // Acknowledge command request
   await ack();
-  const reverse = command.text.split('').reverse().join('');
-  await say(`${reverse}`);
+  const day = parseIncomingDate(command.text);
+  /* eslint-disable no-console */
+  console.log('🎖️', day, command, client);
 });
 
 (async () => {
