@@ -1,11 +1,3 @@
-const populateChar = function (ch, amount) {
-  let result = '';
-  for (let i = 0; i < amount; i += 1) {
-    result += ch;
-  }
-  return result;
-};
-
 function convert(htmlText) {
   // define default styleConfig
   const linkProcess = null;
@@ -17,7 +9,16 @@ function convert(htmlText) {
   const oIndentionChar = '-';
   const keepNbsps = false;
 
+  const populateChar = (ch, amount) => {
+    let result = '';
+    for (let i = 0; i < amount; i += 1) {
+      result += ch;
+    }
+    return result;
+  };
+
   // or accept user defined config
+  // TODO: Test if I can remove
   // if (!!styleConfig) {
   //   if (typeof styleConfig.linkProcess === "function") {
   //     linkProcess = styleConfig.linkProcess;
@@ -45,8 +46,6 @@ function convert(htmlText) {
   //   }
   // }
 
-  const uIndention = populateChar(uIndentionChar, listIndentionTabs);
-
   // removel all \n linebreaks
   let tmp = String(htmlText).replace(/\n|\r/g, ' ');
 
@@ -64,21 +63,28 @@ function convert(htmlText) {
   tmp = tmp.replace(/<(script|style)( [^>]*)*>((?!<\/\1( [^>]*)*>).)*<\/\1>/gi, '');
 
   // remove all tags except that are being handled separately
-  tmp = tmp.replace(/<(\/)?((?!h[1-6]( [^>]*)*>)(?!img( [^>]*)*>)(?!a( [^>]*)*>)(?!ul( [^>]*)*>)(?!ol( [^>]*)*>)(?!li( [^>]*)*>)(?!p( [^>]*)*>)(?!div( [^>]*)*>)(?!td( [^>]*)*>)(?!br( [^>]*)*>)[^>\/])[^<>]*>/gi, '');
+  /* eslint-disable no-useless-escape */
+  tmp = tmp.replace(
+    /<(\/)?((?!h[1-6]( [^>]*)*>)(?!img( [^>]*)*>)(?!a( [^>]*)*>)(?!ul( [^>]*)*>)(?!ol( [^>]*)*>)(?!li( [^>]*)*>)(?!p( [^>]*)*>)(?!div( [^>]*)*>)(?!td( [^>]*)*>)(?!br( [^>]*)*>)[^>\/])[^<>]*>/gi,
+    ''
+  );
+  /* eslint-enable no-useless-escape */
 
   // remove or replace images - replacement texts with <> tags will be removed also, if not intentional, try to use other notation
   tmp = tmp.replace(/<img([^>]*)>/gi, (str, imAttrs) => {
     let imSrc = '';
     let imAlt = '';
-    const imSrcResult = (/src="([^"]*)"/i).exec(imAttrs);
-    const imAltResult = (/alt="([^"]*)"/i).exec(imAttrs);
+    const imSrcResult = /src="([^"]*)"/i.exec(imAttrs);
+    const imAltResult = /alt="([^"]*)"/i.exec(imAttrs);
+    /* eslint-disable prefer-destructuring */
     if (imSrcResult !== null) {
       imSrc = imSrcResult[1];
     }
     if (imAltResult !== null) {
       imAlt = imAltResult[1];
     }
-    if (typeof (imgProcess) === 'function') {
+    /* eslint-enable prefer-destructuring */
+    if (typeof imgProcess === 'function') {
       return imgProcess(imSrc, imAlt);
     }
     if (imAlt === '') {
@@ -88,23 +94,30 @@ function convert(htmlText) {
   });
 
   function createListReplaceCb() {
-    return function (match, listType, listAttributes, listBody) {
+    return (match, listType, listAttributes, listBody) => {
       let liIndex = 0;
       if (listAttributes && /start="([0-9]+)"/i.test(listAttributes)) {
-        liIndex = (/start="([0-9]+)"/i.exec(listAttributes)[1]) - 1;
+        liIndex = /start="([0-9]+)"/i.exec(listAttributes)[1] - 1;
       }
-      const plainListItem = `<p>${listBody.replace(/<li[^>]*>(((?!<li[^>]*>)(?!<\/li>).)*)<\/li>/gi, (str, listItem) => {
-        let actSubIndex = 0;
-        const plainListLine = listItem.replace(/(^|(<br \/>))(?!<p>)/gi, () => {
-          if (listType === 'o' && actSubIndex === 0) {
-            liIndex += 1;
-            actSubIndex += 1;
-            return `<br />${liIndex}${populateChar(oIndentionChar, listIndentionTabs - (String(liIndex).length))}`;
-          }
-          return `<br />${uIndention}`;
-        });
-        return plainListLine;
-      })}</p>`;
+      const uIndention = populateChar(uIndentionChar, listIndentionTabs);
+      const plainListItem = `<p>${listBody.replace(
+        /<li[^>]*>(((?!<li[^>]*>)(?!<\/li>).)*)<\/li>/gi,
+        (str, listItem) => {
+          let actSubIndex = 0;
+          const plainListLine = listItem.replace(/(^|(<br \/>))(?!<p>)/gi, () => {
+            if (listType === 'o' && actSubIndex === 0) {
+              liIndex += 1;
+              actSubIndex += 1;
+              return `<br />${liIndex}${populateChar(
+                oIndentionChar,
+                listIndentionTabs - String(liIndex).length
+              )}`;
+            }
+            return ` < br / > ${uIndention}`;
+          });
+          return plainListLine;
+        }
+      )} </p>`;
       return plainListItem;
     };
   }
@@ -114,7 +127,10 @@ function convert(htmlText) {
     tmp = tmp.replace(/<\/?ul[^>]*>|<\/?ol[^>]*>|<\/?li[^>]*>/gi, '\n');
   } else if (listStyle === 'indention') {
     while (/<(o|u)l[^>]*>(.*)<\/\1l>/gi.test(tmp)) {
-      tmp = tmp.replace(/<(o|u)l([^>]*)>(((?!<(o|u)l[^>]*>)(?!<\/(o|u)l>).)*)<\/\1l>/gi, createListReplaceCb());
+      tmp = tmp.replace(
+        /<(o|u)l([^>]*)>(((?!<(o|u)l[^>]*>)(?!<\/(o|u)l>).)*)<\/\1l>/gi,
+        createListReplaceCb()
+      );
     }
   }
 
@@ -122,15 +138,30 @@ function convert(htmlText) {
   if (headingStyle === 'linebreak') {
     tmp = tmp.replace(/<h([1-6])[^>]*>([^<]*)<\/h\1>/gi, '\n$2\n');
   } else if (headingStyle === 'underline') {
-    tmp = tmp.replace(/<h1[^>]*>(((?!<\/h1>).)*)<\/h1>/gi, (str, p1) => `\n&nbsp;\n${p1}\n${populateChar('=', p1.length)}\n&nbsp;\n`);
-    tmp = tmp.replace(/<h2[^>]*>(((?!<\/h2>).)*)<\/h2>/gi, (str, p1) => `\n&nbsp;\n${p1}\n${populateChar('-', p1.length)}\n&nbsp;\n`);
-    tmp = tmp.replace(/<h([3-6])[^>]*>(((?!<\/h\1>).)*)<\/h\1>/gi, (str, p1, p2) => `\n&nbsp;\n${p2}\n&nbsp;\n`);
+    tmp = tmp.replace(
+      /<h1[^>]*>(((?!<\/h1>).)*)<\/h1>/gi,
+      (str, p1) => `\n&nbsp;\n${p1}\n${populateChar('=', p1.length)}\n&nbsp;\n`
+    );
+    tmp = tmp.replace(
+      /<h2[^>]*>(((?!<\/h2>).)*)<\/h2>/gi,
+      (str, p1) => `\n&nbsp;\n${p1}\n${populateChar('-', p1.length)}\n&nbsp;\n`
+    );
+    tmp = tmp.replace(
+      /<h([3-6])[^>]*>(((?!<\/h\1>).)*)<\/h\1>/gi,
+      (str, p1, p2) => `\n&nbsp;\n${p2}\n&nbsp;\n`
+    );
   } else if (headingStyle === 'hashify') {
-    tmp = tmp.replace(/<h([1-6])[^>]*>([^<]*)<\/h\1>/gi, (str, p1, p2) => `\n&nbsp;\n${populateChar('#', p1)} ${p2}\n&nbsp;\n`);
+    tmp = tmp.replace(
+      /<h([1-6])[^>]*>([^<]*)<\/h\1>/gi,
+      (str, p1, p2) => `\n&nbsp;\n${populateChar('#', p1)} ${p2}\n&nbsp;\n`
+    );
   }
 
   // replace <br>s, <td>s, <divs> and <p>s with linebreaks
-  tmp = tmp.replace(/<br( [^>]*)*>|<p( [^>]*)*>|<\/p( [^>]*)*>|<div( [^>]*)*>|<\/div( [^>]*)*>|<td( [^>]*)*>|<\/td( [^>]*)*>/gi, '\n');
+  tmp = tmp.replace(
+    /<br( [^>]*)*>|<p( [^>]*)*>|<\/p( [^>]*)*>|<div( [^>]*)*>|<\/div( [^>]*)*>|<td( [^>]*)*>|<\/td( [^>]*)*>/gi,
+    '\n'
+  );
 
   // replace <a href>b<a> links with b (href) or as described in the linkProcess function
   tmp = tmp.replace(/<a[^>]*href="([^"]*)"[^>]*>([^<]+)<\/a[^>]*>/gi, (str, href, linkText) => {
@@ -174,4 +205,6 @@ function convert(htmlText) {
   return tmp;
 }
 
-export { convert };
+export default {
+  convert,
+};
