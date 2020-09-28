@@ -100,6 +100,7 @@ function convert(htmlText) {
         liIndex = /start="([0-9]+)"/i.exec(listAttributes)[1] - 1;
       }
       const uIndention = populateChar(uIndentionChar, listIndentionTabs);
+      const brIndention = `< br /> ${uIndention}`;
       const plainListItem = `<p>${listBody.replace(
         /<li[^>]*>(((?!<li[^>]*>)(?!<\/li>).)*)<\/li>/gi,
         (str, listItem) => {
@@ -113,10 +114,8 @@ function convert(htmlText) {
                 listIndentionTabs - String(liIndex).length
               )}`;
             }
-            return ` < br / > $ {
-        uIndention
-      }
-      `;
+            // prettier-ignore
+            return brIndention;
           });
           return plainListLine;
         }

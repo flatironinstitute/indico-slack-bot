@@ -58,9 +58,4 @@ const catchErrors = (fn) => {
     .catch((error) => Promise.resolve([undefined, error]));
 };
 
-export {
-  parseIncomingDate,
-  formatTime,
-  logError,
-  catchErrors
-};
+export { parseIncomingDate, formatTime, logError, catchErrors };

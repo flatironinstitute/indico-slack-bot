@@ -117,6 +117,7 @@ function convert(htmlText) {
       }
 
       var uIndention = populateChar(uIndentionChar, listIndentionTabs);
+      var brIndention = "< br /> ".concat(uIndention);
       var plainListItem = "<p>".concat(listBody.replace(/<li[^>]*>(((?!<li[^>]*>)(?!<\/li>).)*)<\/li>/gi, (str, listItem) => {
         var actSubIndex = 0;
         var plainListLine = listItem.replace(/(^|(<br \/>))(?!<p>)/gi, () => {
@@ -124,9 +125,10 @@ function convert(htmlText) {
             liIndex += 1;
             actSubIndex += 1;
             return "<br />".concat(liIndex).concat(populateChar(oIndentionChar, listIndentionTabs - String(liIndex).length));
-          }
+          } // prettier-ignore
 
-          return " < br / > $ {\n        uIndention\n      }\n      ";
+
+          return brIndention;
         });
         return plainListLine;
       }), " </p>");

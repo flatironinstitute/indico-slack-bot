@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./dist/app.js",
-    "lint": "eslint \"**/*.js\" --fix",
+    "build": "npm run lint && npm run babel",
+    "babel": "./node_modules/.bin/babel src --out-dir dist",
+    "lint": "eslint \"src/**.js\" --fix",
     "lint:silent": "eslint \"**/*.{js,ts}\" --quiet --fix"
   },
   "repository": {
