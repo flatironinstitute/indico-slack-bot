@@ -23,6 +23,13 @@
 ## Lucy Questions
 
 1. Keep the locations if everything is remote?
+   (remove/comment out)
 2. Learn more / RSVP / Something else?
+
+- Remove buttons and make into links.
+
 3. Icons as circles (FI as circle)
+
+- Lucy to send.
+
 4. Sparkles

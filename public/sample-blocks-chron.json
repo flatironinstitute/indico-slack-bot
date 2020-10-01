@@ -3,7 +3,7 @@
       "type": "header",
       "text": {
         "type": "plain_text",
-        "text": ":sparkles:  Flatiron Events  :sparkles:"
+        "text": "Flatiron Events"
       }
     },
     {
@@ -20,7 +20,7 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": ":calendar: |   *TODAY*  | :calendar: "
+        "text": " |   *TODAY*  | "
       }
     },
     {
@@ -75,7 +75,7 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": ":calendar: |   *TOMORROW*  | :calendar: "
+        "text": " |   *TOMORROW*  |  "
       }
     },
     {
