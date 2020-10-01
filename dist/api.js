@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = queryIndicoByDate;
 
 var _moment = _interopRequireDefault(require("moment"));
 
@@ -35,8 +35,3 @@ function _queryIndicoByDate() {
   });
   return _queryIndicoByDate.apply(this, arguments);
 }
-
-var _default = {
-  queryIndicoByDate
-};
-exports.default = _default;

@@ -7,8 +7,6 @@ exports.default = void 0;
 
 var _moment = _interopRequireDefault(require("moment"));
 
-var HtmlToPlainText = _interopRequireWildcard(require("./htmltoplaintext"));
-
 var Utils = _interopRequireWildcard(require("./utils"));
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
@@ -17,6 +15,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/* eslint-disable class-methods-use-this */
 class Payload {
   /**
    * Slack payload.
@@ -29,64 +28,7 @@ class Payload {
     this.day = day;
     this.results = results;
     this.isAuto = isAuto;
-  }
-  /**
-   * Converts HTML descriptions into plain text.
-   * @param {string} description HTML as a string.
-   * @return {string} plaintext Formatted for slack.
-   */
-
-
-  static convertHtmltoPlainText(description) {
-    var textVersion = HtmlToPlainText.convert(description).split('\n');
-    var plaintext = textVersion[0].slice(0, 140);
-    return plaintext;
-  }
-  /**
-   * Provides image url for center-specific image.
-   * @param {object} result Indico results object.
-   * @return {string} block Formatted cloudinary url.
-   */
-
-
-  static getCenterImageUrl(result) {
-    var imageUrl = 'v1599011059/fi_a0ovmj.png';
-    var keywordArr = result.keywords;
-
-    if (keywordArr.length) {
-      var cat = keywordArr[0].toLowerCase();
-
-      switch (true) {
-        case cat.includes('cca'):
-          imageUrl = 'v1599011032/cca_pquuqe.png';
-          break;
-
-        case cat.includes('ccq'):
-          imageUrl = 'v1599011032/ccq_jlsj2q.png';
-          break;
-
-        case cat.includes('ccm'):
-          imageUrl = 'v1599011032/ccm_dwnfbd.png';
-          break;
-
-        case cat.includes('ccb'):
-          imageUrl = 'v1599011032/ccb_bszjvm.png';
-          break;
-
-        case cat.includes('ccn'):
-          imageUrl = 'v1600372515/CCN_logo_color_square_D_caeobs.jpg';
-          break;
-
-        case cat.includes('lodestar'):
-          imageUrl = 'v1600269487/loadstar_icon1_g3xmy3.jpg';
-          break;
-
-        default: // do nothing
-
-      }
-    }
-
-    return "https://res.cloudinary.com/dja17zg5p/image/upload/".concat(imageUrl);
+    this.thePayload = null;
   }
   /**
    * Wraps assembles the results block.
@@ -96,7 +38,7 @@ class Payload {
 
 
   assembleResultBlock(result) {
-    var description = this.convertHtmltoPlainText(result.description).trim();
+    var description = Utils.convertHtmltoPlainText(result.description).trim();
 
     if (description.length) {
       description += ' \n';
@@ -105,7 +47,7 @@ class Payload {
     var timeArr = [result.startDate.time, result.endDate.time].map(t => Utils.formatTime(t));
     var location = result.location.length ? result.location : 'remote';
     var text = "*".concat(result.title, "*\n _").concat(location, ",") + " ".concat(timeArr[0], "-").concat(timeArr[1], "_ \n\n") + " ".concat(description, " <").concat(result.url, " | Learn more> \n");
-    var image = this.getCenterImageUrl(result);
+    var image = Utils.getCenterImageUrl(result);
     return {
       type: 'section',
       text: {
@@ -128,7 +70,7 @@ class Payload {
    */
 
 
-  assemble() {
+  get assembled() {
     var divider = {
       type: 'divider'
     };
@@ -205,7 +147,4 @@ class Payload {
 
 }
 
-var _default = {
-  Payload
-};
-exports.default = _default;
+exports.default = Payload;

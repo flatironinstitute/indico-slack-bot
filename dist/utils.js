@@ -6,9 +6,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.parseIncomingDate = parseIncomingDate;
 exports.formatTime = formatTime;
 exports.logError = logError;
+exports.convertHtmltoPlainText = convertHtmltoPlainText;
+exports.getCenterImageUrl = getCenterImageUrl;
 exports.catchErrors = void 0;
 
 var chrono = _interopRequireWildcard(require("chrono-node"));
+
+var HtmlToPlainText = _interopRequireWildcard(require("./htmltoplaintext"));
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
@@ -72,8 +76,65 @@ function logError(error) {
 
 
 var catchErrors = fn => {
-  // eslint-disable-next-line prettier/prettier
   return fn.then(res => [res, undefined]).catch(error => Promise.resolve([undefined, error]));
 };
+/**
+ * Converts HTML descriptions into plain text.
+ * @param {string} description HTML as a string.
+ * @return {string} plaintext Formatted for slack.
+ */
+
 
 exports.catchErrors = catchErrors;
+
+function convertHtmltoPlainText(description) {
+  var textVersion = HtmlToPlainText.convert(description).split('\n');
+  var plaintext = textVersion[0].slice(0, 140);
+  return plaintext;
+}
+/**
+ * Provides image url for center-specific image.
+ * @param {object} result Indico results object.
+ * @return {string} block Formatted cloudinary url.
+ */
+
+
+function getCenterImageUrl(result) {
+  var imageUrl = 'v1599011059/fi_a0ovmj.png';
+  var keywordArr = result.keywords;
+
+  if (keywordArr.length) {
+    var cat = keywordArr[0].toLowerCase();
+
+    switch (true) {
+      case cat.includes('cca'):
+        imageUrl = 'v1599011032/cca_pquuqe.png';
+        break;
+
+      case cat.includes('ccq'):
+        imageUrl = 'v1599011032/ccq_jlsj2q.png';
+        break;
+
+      case cat.includes('ccm'):
+        imageUrl = 'v1599011032/ccm_dwnfbd.png';
+        break;
+
+      case cat.includes('ccb'):
+        imageUrl = 'v1599011032/ccb_bszjvm.png';
+        break;
+
+      case cat.includes('ccn'):
+        imageUrl = 'v1600372515/CCN_logo_color_square_D_caeobs.jpg';
+        break;
+
+      case cat.includes('lodestar'):
+        imageUrl = 'v1600269487/loadstar_icon1_g3xmy3.jpg';
+        break;
+
+      default: // do nothing
+
+    }
+  }
+
+  return "https://res.cloudinary.com/dja17zg5p/image/upload/".concat(imageUrl);
+}

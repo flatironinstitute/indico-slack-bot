@@ -3,8 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.convert = convert;
 
+/* eslint-disable import/prefer-default-export */
 function convert(htmlText) {
   // define default styleConfig
   var linkProcess = null;
@@ -196,8 +197,3 @@ function convert(htmlText) {
 
   return tmp;
 }
-
-var _default = {
-  convert
-};
-exports.default = _default;

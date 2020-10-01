@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 function convert(htmlText) {
   // define default styleConfig
   const linkProcess = null;
@@ -207,6 +208,4 @@ function convert(htmlText) {
   return tmp;
 }
 
-export default {
-  convert
-};
+export { convert };

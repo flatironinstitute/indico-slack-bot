@@ -1,8 +1,8 @@
+/* eslint-disable class-methods-use-this */
 import moment from 'moment';
-import * as HtmlToPlainText from './htmltoplaintext';
 import * as Utils from './utils';
 
-class Payload {
+export default class Payload {
   /**
    * Slack payload.
    * @param {string} day Date in ISO format.
@@ -14,52 +14,7 @@ class Payload {
     this.day = day;
     this.results = results;
     this.isAuto = isAuto;
-  }
-
-  /**
-   * Converts HTML descriptions into plain text.
-   * @param {string} description HTML as a string.
-   * @return {string} plaintext Formatted for slack.
-   */
-  static convertHtmltoPlainText(description) {
-    const textVersion = HtmlToPlainText.convert(description).split('\n');
-    const plaintext = textVersion[0].slice(0, 140);
-    return plaintext;
-  }
-
-  /**
-   * Provides image url for center-specific image.
-   * @param {object} result Indico results object.
-   * @return {string} block Formatted cloudinary url.
-   */
-  static getCenterImageUrl(result) {
-    let imageUrl = 'v1599011059/fi_a0ovmj.png';
-    const keywordArr = result.keywords;
-    if (keywordArr.length) {
-      const cat = keywordArr[0].toLowerCase();
-      switch (true) {
-        case cat.includes('cca'):
-          imageUrl = 'v1599011032/cca_pquuqe.png';
-          break;
-        case cat.includes('ccq'):
-          imageUrl = 'v1599011032/ccq_jlsj2q.png';
-          break;
-        case cat.includes('ccm'):
-          imageUrl = 'v1599011032/ccm_dwnfbd.png';
-          break;
-        case cat.includes('ccb'):
-          imageUrl = 'v1599011032/ccb_bszjvm.png';
-          break;
-        case cat.includes('ccn'):
-          imageUrl = 'v1600372515/CCN_logo_color_square_D_caeobs.jpg';
-          break;
-        case cat.includes('lodestar'):
-          imageUrl = 'v1600269487/loadstar_icon1_g3xmy3.jpg';
-          break;
-        default: // do nothing
-      }
-    }
-    return `https://res.cloudinary.com/dja17zg5p/image/upload/${imageUrl}`;
+    this.thePayload = null;
   }
 
   /**
@@ -68,7 +23,7 @@ class Payload {
    * @return {object} block Formatted Slack block.
    */
   assembleResultBlock(result) {
-    let description = this.convertHtmltoPlainText(result.description).trim();
+    let description = Utils.convertHtmltoPlainText(result.description).trim();
     if (description.length) {
       description += ' \n';
     }
@@ -78,7 +33,7 @@ class Payload {
       `*${result.title}*\n _${location},` +
       ` ${timeArr[0]}-${timeArr[1]}_ \n\n` +
       ` ${description} <${result.url} | Learn more> \n`;
-    const image = this.getCenterImageUrl(result);
+    const image = Utils.getCenterImageUrl(result);
     return {
       type: 'section',
       text: {
@@ -101,7 +56,7 @@ class Payload {
    * Contact: ewood @simonsfoundation.org
    */
 
-  assemble() {
+  get assembled() {
     const divider = {
       type: 'divider'
     };
@@ -174,7 +129,3 @@ class Payload {
     return payload;
   }
 }
-
-export default {
-  Payload
-};

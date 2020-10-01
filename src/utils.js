@@ -1,4 +1,5 @@
 import * as chrono from 'chrono-node';
+import * as HtmlToPlainText from './htmltoplaintext';
 
 /**
  * Function to parse a string message for date information.
@@ -52,10 +53,60 @@ function logError(error) {
  * @return {array} [res, err] Either response or error and undefined.
  */
 const catchErrors = (fn) => {
-  // eslint-disable-next-line prettier/prettier
-  return fn
-    .then((res) => [res, undefined])
-    .catch((error) => Promise.resolve([undefined, error]));
+  return fn.then((res) => [res, undefined]).catch((error) => Promise.resolve([undefined, error]));
 };
 
-export { parseIncomingDate, formatTime, logError, catchErrors };
+/**
+ * Converts HTML descriptions into plain text.
+ * @param {string} description HTML as a string.
+ * @return {string} plaintext Formatted for slack.
+ */
+function convertHtmltoPlainText(description) {
+  const textVersion = HtmlToPlainText.convert(description).split('\n');
+  const plaintext = textVersion[0].slice(0, 140);
+  return plaintext;
+}
+
+/**
+ * Provides image url for center-specific image.
+ * @param {object} result Indico results object.
+ * @return {string} block Formatted cloudinary url.
+ */
+function getCenterImageUrl(result) {
+  let imageUrl = 'v1599011059/fi_a0ovmj.png';
+  const keywordArr = result.keywords;
+  if (keywordArr.length) {
+    const cat = keywordArr[0].toLowerCase();
+    switch (true) {
+      case cat.includes('cca'):
+        imageUrl = 'v1599011032/cca_pquuqe.png';
+        break;
+      case cat.includes('ccq'):
+        imageUrl = 'v1599011032/ccq_jlsj2q.png';
+        break;
+      case cat.includes('ccm'):
+        imageUrl = 'v1599011032/ccm_dwnfbd.png';
+        break;
+      case cat.includes('ccb'):
+        imageUrl = 'v1599011032/ccb_bszjvm.png';
+        break;
+      case cat.includes('ccn'):
+        imageUrl = 'v1600372515/CCN_logo_color_square_D_caeobs.jpg';
+        break;
+      case cat.includes('lodestar'):
+        imageUrl = 'v1600269487/loadstar_icon1_g3xmy3.jpg';
+        break;
+      default: // do nothing
+    }
+  }
+  return `https://res.cloudinary.com/dja17zg5p/image/upload/${imageUrl}`;
+}
+
+export {
+  parseIncomingDate,
+  formatTime,
+  logError,
+  catchErrors,
+  convertHtmltoPlainText,
+  getCenterImageUrl
+};

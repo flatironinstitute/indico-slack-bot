@@ -1,4 +1,4 @@
-import * as Api from './api';
+import queryIndicoByDate from './api';
 import { logError } from './utils';
 import Payload from './payload';
 
@@ -30,13 +30,11 @@ function parseIndicoResponse(res) {
  * @return {object} payload Formatted blocks of a slack response.
  */
 async function buildSlashResponse(day) {
-  // eslint-disable-next-line prettier/prettier
-  const res = await Api.queryIndicoByDate(day).catch((e) => logError(e));
-
+  const res = await queryIndicoByDate(day).catch((e) => logError(e));
   const results = parseIndicoResponse(res);
   const payload = new Payload(day, [results], false);
-  const message = payload.assemble();
+  const message = payload.assembled;
   return message;
 }
 
-export default { buildSlashResponse };
+export { buildSlashResponse, parseIndicoResponse };
