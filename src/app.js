@@ -10,7 +10,7 @@ const sampleBlocksChron = {
       type: 'header',
       text: {
         type: 'plain_text',
-        text: ':sparkles:  Flatiron Events  :sparkles:'
+        text: '  Flatiron Events  '
       }
     },
     {
@@ -29,52 +29,28 @@ const sampleBlocksChron = {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: ':calendar: |   *TODAY*  | :calendar: '
+        text: ' |   *TODAY*  |  '
       }
     },
     {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: '`10 AM`  :ccb-circle: *Biophysical Modeling Group Meeting* at _Flatiron Institute_ '
-      },
-      accessory: {
-        type: 'button',
-        text: {
-          type: 'plain_text',
-          text: 'Learn More',
-          emoji: true
-        }
+        text: '`10 AM`  :ccb-circle: *Biophysical Modeling Group Meeting* '
       }
     },
     {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: '`1:15 PM` :ccb-circle: *CCB Brown Bag Seminar: Naomi Globus (CCA/NYU)* at _Zoom_ '
-      },
-      accessory: {
-        type: 'button',
-        text: {
-          type: 'plain_text',
-          text: 'Learn More',
-          emoji: true
-        }
+        text: '`1:15 PM` :ccb-circle: *CCB Brown Bag Seminar: Naomi Globus (CCA/NYU)*'
       }
     },
     {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: '`2 PM` :fi: *Sciware/Software Carpentries: Git* at _remote_'
-      },
-      accessory: {
-        type: 'button',
-        text: {
-          type: 'plain_text',
-          text: 'Learn More',
-          emoji: true
-        }
+        text: '`2 PM` :fi: *Sciware/Software Carpentries: Git*'
       }
     },
     {
@@ -84,22 +60,14 @@ const sampleBlocksChron = {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: ':calendar: |   *TOMORROW*  | :calendar: '
+        text: ' |   *TOMORROW*  |  '
       }
     },
     {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: '`10 AM` :lodestar: *Interviewing Skills for Postdocs* at _remote_'
-      },
-      accessory: {
-        type: 'button',
-        text: {
-          type: 'plain_text',
-          text: 'RSVP',
-          emoji: true
-        }
+        text: '`10 AM` :lodestar: <http://www.foo.com|*Interviewing Skills for Postdocs*>'
       }
     },
     {
@@ -124,17 +92,8 @@ const sampleBlocksSlash = {
       type: 'header',
       text: {
         type: 'plain_text',
-        text: ':sparkles:  Flatiron Events  :sparkles:'
+        text: '  Friday, October 2nd  '
       }
-    },
-    {
-      type: 'context',
-      elements: [
-        {
-          text: '*November 12, 2019*  |  Indico Bot',
-          type: 'mrkdwn'
-        }
-      ]
     },
     {
       type: 'divider'
@@ -143,52 +102,21 @@ const sampleBlocksSlash = {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: ':calendar: |   *Friday, October 2nd *  | :calendar: '
+        text: '`10 AM`  :ccb-circle: *Biophysical Modeling Group Meeting*'
       }
     },
     {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: '`10 AM`  :ccb_circle: *Biophysical Modeling Group Meeting* at _Flatiron Institute_ '
-      },
-      accessory: {
-        type: 'button',
-        text: {
-          type: 'plain_text',
-          text: 'Learn More',
-          emoji: true
-        }
+        text: '`1:15 PM` :ccb-circle: *CCB Brown Bag Seminar: Naomi Globus (CCA/NYU)*'
       }
     },
     {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: '`1:15 PM` :ccb_circle: *CCB Brown Bag Seminar: Naomi Globus (CCA/NYU)* at _Zoom_ '
-      },
-      accessory: {
-        type: 'button',
-        text: {
-          type: 'plain_text',
-          text: 'Learn More',
-          emoji: true
-        }
-      }
-    },
-    {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: '`2 PM` :fi: *Sciware/Software Carpentries: Git* at _remote_'
-      },
-      accessory: {
-        type: 'button',
-        text: {
-          type: 'plain_text',
-          text: 'Learn More',
-          emoji: true
-        }
+        text: '`2 PM` :fi: *Sciware/Software Carpentries: Git*'
       }
     },
     {
@@ -215,7 +143,7 @@ const app = new App({
 
 app.message('hello', async ({ message, say }) => {
   await say(`Hola <@${message.user}>! Here comes a sample text.`);
-  await say(sampleBlocksSlash);
+  await say();
 });
 
 // The echo command simply echoes on command
@@ -234,7 +162,7 @@ app.command('/indico', async ({ command, ack, say }) => {
     contentErr += command.text;
     logError(contentErr);
   }
-  await say(sampleBlocksChron).catch((e) => logError(e));
+  await say(content).catch((e) => logError(e));
 });
 
 (async () => {

@@ -3,15 +3,8 @@
       "type": "header",
       "text": {
         "type": "plain_text",
-        "text": " Friday, October 2nd "
+        "text": "  Friday, October 2nd  "
       }
-    },
-    {
-      "type": "context",
-      "elements": [{
-        "text": "*November 12, 2019*  |  Indico Bot",
-        "type": "mrkdwn"
-      }]
     },
     {
       "type": "divider"
@@ -20,45 +13,21 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "`10 AM`  :ccn-circle: *Biophysical Modeling Group Meeting* at _Flatiron Institute_ "
-      },
-      "accessory": {
-        "type": "button",
-        "text": {
-          "type": "plain_text",
-          "text": "Learn More",
-          "emoji": true
-        }
+        "text": "`10 AM`  :ccb-circle: *Biophysical Modeling Group Meeting*"
       }
     },
     {
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "`1:15 PM` :cca-circle: *CCB Brown Bag Seminar: Naomi Globus (CCA/NYU)* at _Zoom_ "
-      },
-      "accessory": {
-        "type": "button",
-        "text": {
-          "type": "plain_text",
-          "text": "Learn More",
-          "emoji": true
-        }
+        "text": "`1:15 PM` :ccb-circle: *CCB Brown Bag Seminar: Naomi Globus (CCA/NYU)*"
       }
     },
     {
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "`2 PM` :fi: *Sciware/Software Carpentries: Git* at _remote_"
-      },
-      "accessory": {
-        "type": "button",
-        "text": {
-          "type": "plain_text",
-          "text": "Learn More",
-          "emoji": true
-        }
+        "text": "`2 PM` :fi: <https://indico.flatironinstitute.org|*Sciware/Software Carpentries: Git*>"
       }
     },
     {
@@ -68,7 +37,7 @@
       "type": "context",
       "elements": [{
         "type": "mrkdwn",
-        "text": ":pushpin: Do you have something to include in #fi-events? Here's *how to submit content*."
+        "text": ":pushpin: Do you have something to include in #fi-events? Here's <http://www.foo.com|*how to submit content*>."
       }]
     }
   ]

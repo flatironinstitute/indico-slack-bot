@@ -1,8 +1,8 @@
 # TODO:
 
-- Move over chronjob
+- Chronjob turn on.
 - Tests
-- Indico properties
+- Indico properties.
 - Replace moment.js see https://momentjs.com/docs/
 - Add pre-commit linting hooks.
 - Add modal for content submission.
@@ -19,6 +19,16 @@
 
 - ESLint
 - Babel / packaging
+- New Lucy formatting on the payload js.
+
+  /\*\* Notes: Alternate Payload Styling
+
+  - _Tuesday, September 22:_ < url | 160 Speaker Series: Grant Sanderson>
+  - Start: 4: 00 PM September 22 2020
+  - End: 5: 00 PM September 22 2020
+  - Location: Zoom Webinar
+  - Contact: ewood @simonsfoundation.org
+    \*/
 
 ## Lucy Questions
 
@@ -33,3 +43,5 @@
 - Lucy to send.
 
 4. Sparkles
+
+- No emoji

@@ -23,74 +23,78 @@ export default class Payload {
    * @return {object} block Formatted Slack block.
    */
   assembleResultBlock(result) {
-    let description = Utils.convertHtmltoPlainText(result.description).trim();
-    if (description.length) {
-      description += ' \n';
-    }
     const timeArr = [result.startDate.time, result.endDate.time].map((t) => Utils.formatTime(t));
-    const location = result.location.length ? result.location : 'remote';
-    const text =
-      `*${result.title}*\n _${location},` +
-      ` ${timeArr[0]}-${timeArr[1]}_ \n\n` +
-      ` ${description} <${result.url} | Learn more> \n`;
-    const image = Utils.getCenterImageUrl(result);
+    const time = `\`${timeArr[0]}\``;
+    const emoji = Utils.getCenterEmojiString(result);
+    const text = `${time} ${emoji} <${result.url} |*${result.title}*>`;
     return {
       type: 'section',
       text: {
         type: 'mrkdwn',
         text
-      },
-      accessory: {
-        type: 'image',
-        image_url: image,
-        alt_text: 'category icon'
       }
     };
   }
-
-  /** Notes: Alternate Payload Styling
-   * *Tuesday, September 22:* < url | 160 Speaker Series: Grant Sanderson>
-   * Start: 4: 00 PM September 22 2020
-   * End: 5: 00 PM September 22 2020
-   * Location: Zoom Webinar
-   * Contact: ewood @simonsfoundation.org
-   */
 
   get assembled() {
     const divider = {
       type: 'divider'
     };
     const firstHeader = {
-      type: 'section',
+      type: 'header',
       text: {
-        type: 'mrkdwn',
-        text: "*Today's Events*"
+        type: 'plain_text',
+        text: `  ${moment(this.day).format('dddd, MMMM Do')}  `
       }
     };
+
+    const contextHeader = {
+      type: 'context',
+      elements: [{
+        text: `**${moment(this.day).format('MMMM DD, YYYY')}**  |  Indico Bot`,
+        type: 'mrkdwn'
+      }]
+    };
+
     const nullBlock = {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: '_No events scheduled._\n'
+        text: '_No events scheduled._'
       }
     };
 
-    const blocks = [];
-    blocks.push({
+    const dateBlock = {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: `Hello, this is the *Indico bot* with an event update for *${moment(this.day).format(
-          'dddd, MMMM DD'
-        )}*.\n\n `
+        text: ' |   *TODAY*  |  '
       }
-    });
+    };
 
-    if (!this.isAuto) {
-      firstHeader.text.text = `*${moment(this.day).format('dddd, MMMM Do')}*`;
+    const finalBlock = {
+      type: 'context',
+      elements: [{
+        type: 'mrkdwn',
+        text: ":pushpin: Do you have something to include in #fi-events? Here's <http://www.foo.com|*how to submit content*>."
+      }]
+    };
+
+    const blocks = [];
+    if (this.isAuto) {
+      firstHeader.text.text = '  Flatiron Events  ';
     }
     blocks.push(firstHeader);
+
+    if (this.isAuto) {
+      blocks.push(contextHeader);
+    }
+
     blocks.push(divider);
+
+    if (this.isAuto) {
+      blocks.push(dateBlock);
+    }
 
     if (this.results[0] && this.results[0].length) {
       this.results[0].forEach((r) => {
@@ -101,19 +105,20 @@ export default class Payload {
       blocks.push(nullBlock);
     }
 
+    blocks.push(divider);
+
     if (this.isAuto) {
       const secondHeader = {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: "*Tomorrow's Events*"
+          text: ' |   *TOMORROW*  |  '
         }
       };
       if (moment(this.day).day() === 5 || moment(this.day).day() === 6) {
-        secondHeader.text.text = "*Monday's Events*";
+        secondHeader.text.text = ' |   *MONDAY*  |  ';
       }
       blocks.push(secondHeader);
-      blocks.push(divider);
       if (this.results[1] && this.results[1].length) {
         this.results[1].forEach((r) => {
           const block = this.assembleResultBlock(r);
@@ -122,7 +127,9 @@ export default class Payload {
       } else {
         blocks.push(nullBlock);
       }
+      blocks.push(divider);
     }
+    blocks.push(finalBlock);
     const payload = {
       blocks
     };
