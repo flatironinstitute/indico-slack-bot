@@ -44,4 +44,4 @@ slack-token
 .env
 
 # Built files
-dist/*
+dist/
