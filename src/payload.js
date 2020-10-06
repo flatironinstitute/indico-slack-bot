@@ -50,10 +50,12 @@ export default class Payload {
 
     const contextHeader = {
       type: 'context',
-      elements: [{
-        text: `**${moment(this.day).format('MMMM DD, YYYY')}**  |  Indico Bot`,
-        type: 'mrkdwn'
-      }]
+      elements: [
+        {
+          text: `**${moment(this.day).format('MMMM DD, YYYY')}**  |  Indico Bot`,
+          type: 'mrkdwn'
+        }
+      ]
     };
 
     const nullBlock = {
@@ -74,10 +76,13 @@ export default class Payload {
 
     const finalBlock = {
       type: 'context',
-      elements: [{
-        type: 'mrkdwn',
-        text: ":pushpin: Do you have something to include in #fi-events? Here's <http://www.foo.com|*how to submit content*>."
-      }]
+      elements: [
+        {
+          type: 'mrkdwn',
+          text:
+            ":pushpin: Do you have something to include in #fi-events? Here's <http://www.foo.com|*how to submit content*>."
+        }
+      ]
     };
 
     const blocks = [];
