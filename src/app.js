@@ -2,6 +2,8 @@ import { catchErrors, parseIncomingDate, logError } from './utils';
 import { buildSlashResponse } from './fabricator';
 
 const { App } = require('@slack/bolt');
+const { CronJob } = require('cron');
+
 require('dotenv').config();
 
 // Initialize app
@@ -37,9 +39,27 @@ app.command('/indico', async ({ command, ack, respond }) => {
     response_type: 'ephemeral',
     blocks: content.blocks
   };
-  // // Post response visible only to requesting user
+  // Post response visible only to requesting user
   await respond(param).catch((e) => logError(e));
 });
+
+/*
+ * Cronjob runs every weekday (Monday through Friday)
+ * at 08:00:00 AM. It does not run on Saturday
+ * or Sunday.
+ *'* 00 08 * * 1-5'
+ */
+const job = new CronJob(
+  '* * * * * *',
+  () => {
+    // eslint-disable-next-line no-console
+    console.log('You will see this message every second');
+  },
+  null,
+  true,
+  'America/New_York'
+);
+job.start();
 
 (async () => {
   // Start the app
