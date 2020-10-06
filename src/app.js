@@ -4,209 +4,6 @@ import { buildSlashResponse } from './fabricator';
 const { App } = require('@slack/bolt');
 require('dotenv').config();
 
-const sampleBlocksChron = {
-  blocks: [
-    {
-      type: 'header',
-      text: {
-        type: 'plain_text',
-        text: ':sparkles:  Flatiron Events  :sparkles:'
-      }
-    },
-    {
-      type: 'context',
-      elements: [
-        {
-          text: '*November 12, 2019*  |  Indico Bot',
-          type: 'mrkdwn'
-        }
-      ]
-    },
-    {
-      type: 'divider'
-    },
-    {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: ':calendar: |   *TODAY*  | :calendar: '
-      }
-    },
-    {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: '`10 AM`  :ccb-circle: *Biophysical Modeling Group Meeting* at _Flatiron Institute_ '
-      },
-      accessory: {
-        type: 'button',
-        text: {
-          type: 'plain_text',
-          text: 'Learn More',
-          emoji: true
-        }
-      }
-    },
-    {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: '`1:15 PM` :ccb-circle: *CCB Brown Bag Seminar: Naomi Globus (CCA/NYU)* at _Zoom_ '
-      },
-      accessory: {
-        type: 'button',
-        text: {
-          type: 'plain_text',
-          text: 'Learn More',
-          emoji: true
-        }
-      }
-    },
-    {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: '`2 PM` :fi: *Sciware/Software Carpentries: Git* at _remote_'
-      },
-      accessory: {
-        type: 'button',
-        text: {
-          type: 'plain_text',
-          text: 'Learn More',
-          emoji: true
-        }
-      }
-    },
-    {
-      type: 'divider'
-    },
-    {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: ':calendar: |   *TOMORROW*  | :calendar: '
-      }
-    },
-    {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: '`10 AM` :lodestar: *Interviewing Skills for Postdocs* at _remote_'
-      },
-      accessory: {
-        type: 'button',
-        text: {
-          type: 'plain_text',
-          text: 'RSVP',
-          emoji: true
-        }
-      }
-    },
-    {
-      type: 'divider'
-    },
-    {
-      type: 'context',
-      elements: [
-        {
-          type: 'mrkdwn',
-          text:
-            ":pushpin: Do you have something to include in #fi-events? Here's <http://www.foo.com|*how to submit content*>."
-        }
-      ]
-    }
-  ]
-};
-
-const sampleBlocksSlash = {
-  blocks: [
-    {
-      type: 'header',
-      text: {
-        type: 'plain_text',
-        text: ':sparkles:  Flatiron Events  :sparkles:'
-      }
-    },
-    {
-      type: 'context',
-      elements: [
-        {
-          text: '*November 12, 2019*  |  Indico Bot',
-          type: 'mrkdwn'
-        }
-      ]
-    },
-    {
-      type: 'divider'
-    },
-    {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: ':calendar: |   *Friday, October 2nd *  | :calendar: '
-      }
-    },
-    {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: '`10 AM`  :ccb_circle: *Biophysical Modeling Group Meeting* at _Flatiron Institute_ '
-      },
-      accessory: {
-        type: 'button',
-        text: {
-          type: 'plain_text',
-          text: 'Learn More',
-          emoji: true
-        }
-      }
-    },
-    {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: '`1:15 PM` :ccb_circle: *CCB Brown Bag Seminar: Naomi Globus (CCA/NYU)* at _Zoom_ '
-      },
-      accessory: {
-        type: 'button',
-        text: {
-          type: 'plain_text',
-          text: 'Learn More',
-          emoji: true
-        }
-      }
-    },
-    {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: '`2 PM` :fi: *Sciware/Software Carpentries: Git* at _remote_'
-      },
-      accessory: {
-        type: 'button',
-        text: {
-          type: 'plain_text',
-          text: 'Learn More',
-          emoji: true
-        }
-      }
-    },
-    {
-      type: 'divider'
-    },
-    {
-      type: 'context',
-      elements: [
-        {
-          type: 'mrkdwn',
-          text:
-            ":pushpin: Do you have something to include in #fi-events? Here's *how to submit content*."
-        }
-      ]
-    }
-  ]
-};
-
 // Initialize app
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
@@ -214,12 +11,13 @@ const app = new App({
 });
 
 app.message('hello', async ({ message, say }) => {
-  await say(`Hola <@${message.user}>! Here comes a sample text.`);
-  await say(sampleBlocksSlash);
+  await say(
+    `Hello <@${message.user}>! I'm the Indico bot. :indico: I post daily updates to the \`#fi-events\` channel about what's going on at Flatiron. \n You can also ask me about future events by typing  \`/indico\`  followed by a date. `
+  ).catch((e) => logError(e));
 });
 
-// The echo command simply echoes on command
-app.command('/indico', async ({ command, ack, say }) => {
+// The slash command provides event info for a specific date.
+app.command('/indico', async ({ command, ack, respond }) => {
   // Acknowledge command request
   await ack();
   const day = parseIncomingDate(command.text);
@@ -234,7 +32,13 @@ app.command('/indico', async ({ command, ack, say }) => {
     contentErr += command.text;
     logError(contentErr);
   }
-  await say(sampleBlocksChron).catch((e) => logError(e));
+
+  const param = {
+    response_type: 'ephemeral',
+    blocks: content.blocks
+  };
+  // // Post response visible only to requesting user
+  await respond(param).catch((e) => logError(e));
 });
 
 (async () => {

@@ -3,7 +3,7 @@
       "type": "header",
       "text": {
         "type": "plain_text",
-        "text": ":sparkles:  Flatiron Events  :sparkles:"
+        "text": "  Flatiron Events  "
       }
     },
     {
@@ -20,52 +20,28 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": ":calendar: |   *TODAY*  | :calendar: "
+        "text": " |   *TODAY*  |  "
       }
     },
     {
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "`10 AM`  :ccb_circle: *Biophysical Modeling Group Meeting* at _Flatiron Institute_ "
-      },
-      "accessory": {
-        "type": "button",
-        "text": {
-          "type": "plain_text",
-          "text": "Learn More",
-          "emoji": true
-        }
+        "text": "`10 AM`  :ccb-circle: *Biophysical Modeling Group Meeting* "
       }
     },
     {
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "`1:15 PM` :ccb_circle: *CCB Brown Bag Seminar: Naomi Globus (CCA/NYU)* at _Zoom_ "
-      },
-      "accessory": {
-        "type": "button",
-        "text": {
-          "type": "plain_text",
-          "text": "Learn More",
-          "emoji": true
-        }
+        "text": "`1:15 PM` :ccb-circle: *CCB Brown Bag Seminar: Naomi Globus (CCA/NYU)*"
       }
     },
     {
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "`2 PM` :fi: *Sciware/Software Carpentries: Git* at _remote_"
-      },
-      "accessory": {
-        "type": "button",
-        "text": {
-          "type": "plain_text",
-          "text": "Learn More",
-          "emoji": true
-        }
+        "text": "`2 PM` :fi: *Sciware/Software Carpentries: Git*"
       }
     },
     {
@@ -75,22 +51,14 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": ":calendar: |   *TOMORROW*  | :calendar: "
+        "text": " |   *TOMORROW*  |  "
       }
     },
     {
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "`10 AM` :loadstar: *Interviewing Skills for Postdocs* at _remote_"
-      },
-      "accessory": {
-        "type": "button",
-        "text": {
-          "type": "plain_text",
-          "text": "RSVP",
-          "emoji": true
-        }
+        "text": "`10 AM` :lodestar: <http://www.foo.com|*Interviewing Skills for Postdocs*>"
       }
     },
     {
@@ -100,7 +68,7 @@
       "type": "context",
       "elements": [{
         "type": "mrkdwn",
-        "text": ":pushpin: Do you have something to include in #fi-events? Here's *how to submit content*."
+        "text": ":pushpin: Do you have something to include in #fi-events? Here's <http://www.foo.com|*how to submit content*>."
       }]
     }
   ]
