@@ -26,7 +26,7 @@ export default class Payload {
     const timeArr = [result.startDate.time, result.endDate.time].map((t) => Utils.formatTime(t));
     const time = `\`${timeArr[0]}\``;
     const emoji = Utils.getCenterEmojiString(result);
-    const text = `${time} ${emoji} <${result.url} |*${result.title}*>`;
+    const text = `${time}  ${emoji} <${result.url} |*${result.title}*>`;
     return {
       type: 'section',
       text: {
@@ -52,7 +52,7 @@ export default class Payload {
       type: 'context',
       elements: [
         {
-          text: `**${moment(this.day).format('MMMM DD, YYYY')}**  |  Indico Bot`,
+          text: `*${moment(this.day).format('MMMM DD, YYYY')}*  |  :indico: Indico Bot`,
           type: 'mrkdwn'
         }
       ]

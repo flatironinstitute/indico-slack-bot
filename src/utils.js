@@ -1,4 +1,5 @@
 import * as chrono from 'chrono-node';
+import moment from 'moment';
 import * as HtmlToPlainText from './htmltoplaintext';
 
 /**
@@ -93,7 +94,7 @@ function getCenterEmojiString(result) {
       case cat.includes('ccn'):
         emojiStr = ':ccn-circle:';
         break;
-      case cat.includes('lodestar'):
+      case cat.includes('star'):
         emojiStr = ':lodestar-circle:';
         break;
       default: // do nothing
@@ -102,11 +103,28 @@ function getCenterEmojiString(result) {
   return emojiStr;
 }
 
+/**
+ * Gets subsequent weekday from a given date.
+ * @param {string} day Date in ISO format.
+ * @return {string} next Next weekday in YYYY-MM-DD format.
+ */
+function getNextDay(day) {
+  let add = 1;
+  if (moment(day).day() === 5) {
+    add = 3;
+  } else if (moment(day).day() === 6) {
+    add = 2;
+  }
+  const next = moment(day).add(add, 'days').format('YYYY-MM-DD');
+  return next;
+}
+
 export {
   parseIncomingDate,
   formatTime,
   logError,
   catchErrors,
   convertHtmltoPlainText,
-  getCenterEmojiString
+  getCenterEmojiString,
+  getNextDay
 };

@@ -1,5 +1,5 @@
 import queryIndicoByDate from './api';
-import { logError } from './utils';
+import { logError, getNextDay } from './utils';
 import Payload from './payload';
 
 /**
@@ -37,4 +37,28 @@ async function buildSlashResponse(day) {
   return message;
 }
 
-export { buildSlashResponse, parseIndicoResponse };
+/**
+ * Function to gather indico info and organize daily auto messages.
+ * @return {object} payload The payload text for a slack response.
+ */
+async function getDailyAutoMessage() {
+  const day = new Date();
+  const next = getNextDay(day);
+
+  const results = await Promise.all(
+    [day, next].map(async (d) => {
+      let res;
+      try {
+        res = await queryIndicoByDate(d);
+      } catch (e) {
+        logError(e);
+      }
+      return parseIndicoResponse(res);
+    })
+  ).catch((e) => logError(e));
+  const payload = new Payload(day, results, true);
+  const message = payload.assembled;
+  return message;
+}
+
+export { buildSlashResponse, parseIndicoResponse, getDailyAutoMessage };

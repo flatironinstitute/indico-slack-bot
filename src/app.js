@@ -1,5 +1,6 @@
+// eslint-disable no-unused-vars
 import { catchErrors, parseIncomingDate, logError } from './utils';
-import { buildSlashResponse } from './fabricator';
+import { buildSlashResponse, getDailyAutoMessage } from './fabricator';
 
 const { App } = require('@slack/bolt');
 const { CronJob } = require('cron');
@@ -12,6 +13,19 @@ const app = new App({
   signingSecret: process.env.SLACK_SIGNING_SECRET
 });
 
+const errBlocks = {
+  blocks: [
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text:
+          "I'm sorry, but I'm unable to connect to Indico. Please <mailto:scicomp@flatironinstitute.org|contact the admin> or try again shortly."
+      }
+    }
+  ]
+};
+
 app.message('hello', async ({ message, say }) => {
   await say(
     `Hello <@${message.user}>! I'm the Indico bot. :indico: I post daily updates to the \`#fi-events\` channel about what's going on at Flatiron. \n You can also ask me about future events by typing  \`/indico\`  followed by a date. `
@@ -23,14 +37,9 @@ app.command('/indico', async ({ command, ack, respond }) => {
   // Acknowledge command request
   await ack();
   const day = parseIncomingDate(command.text);
-  // eslint-disable-next-line no-unused-vars
   let [content, contentErr] = await catchErrors(buildSlashResponse(day));
   if (contentErr) {
-    // eslint-disable-next-line no-unused-vars
-    content = {
-      text:
-        "I'm sorry, but I'm unable to connect to Indico. Please contact the admin or try again shortly."
-    };
+    content = errBlocks;
     contentErr += command.text;
     logError(contentErr);
   }
@@ -45,15 +54,28 @@ app.command('/indico', async ({ command, ack, respond }) => {
 
 /*
  * Cronjob runs every weekday (Monday through Friday)
- * at 08:00:00 AM. It does not run on Saturday
+ * at 08:01:00 AM. It does not run on Saturday
  * or Sunday.
- *'* 00 08 * * 1-5'
+ *'00 01 08 * * 1-5'
  */
 const job = new CronJob(
-  '* * * * * *',
-  () => {
+  '0 */2 * * * *',
+  async () => {
     // eslint-disable-next-line no-console
-    console.log('You will see this message every second');
+    console.log('You will see this message every 2 minutes');
+    const today = Date.now();
+    let [content, contentErr] = await catchErrors(getDailyAutoMessage());
+    if (contentErr) {
+      content = errBlocks;
+      contentErr += `CronJob @ ${Date.now()}`;
+      logError(contentErr);
+    }
+
+    app.client.chat.postMessage({
+      channel: process.env.SLACK_CHANNEL,
+      token: process.env.SLACK_BOT_TOKEN,
+      blocks: content.blocks
+    });
   },
   null,
   true,
