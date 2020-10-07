@@ -40,24 +40,13 @@ export default class Payload {
     const divider = {
       type: 'divider'
     };
-    const firstHeader = {
-      type: 'header',
-      text: {
-        type: 'plain_text',
-        text: `  ${dayjs(this.day).format('dddd, MMMM Do')}  `
-      }
-    };
-
-    const contextHeader = {
-      type: 'context',
-      elements: [
-        {
-          text: `*${dayjs(this.day).format('MMMM DD, YYYY')}*  |  :indico: Indico Bot`,
-          type: 'mrkdwn'
-        }
-      ]
-    };
-
+    // const spacer = {
+    //   type: 'header',
+    //   text: {
+    //     type: 'plain_text',
+    //     text: `  ${dayjs(this.day).format('dddd, MMMM Do')}  `
+    //   }
+    // };
     const nullBlock = {
       type: 'section',
       text: {
@@ -65,15 +54,13 @@ export default class Payload {
         text: '_No events scheduled._'
       }
     };
-
     const dateBlock = {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: ' |   *TODAY*  |  '
+        text: `  *TODAY*  |  ${dayjs(this.day).format('MMMM DD, YYYY')}  `
       }
     };
-
     const finalBlock = {
       type: 'context',
       elements: [
@@ -84,22 +71,23 @@ export default class Payload {
         }
       ]
     };
-
     const blocks = [];
-    if (this.isAuto) {
-      firstHeader.text.text = '  Flatiron Events  ';
-    }
-    blocks.push(firstHeader);
 
-    if (this.isAuto) {
-      blocks.push(contextHeader);
-    }
+    // if (this.isAuto) {
+    //   firstHeader.text.text = '  Flatiron Events  ';
+    // }
+    // blocks.push(firstHeader);
 
-    blocks.push(divider);
+    // if (this.isAuto) {
+    //   blocks.push(contextHeader);
+    // }
 
-    if (this.isAuto) {
-      blocks.push(dateBlock);
+    // blocks.push(divider);
+
+    if (!this.isAuto) {
+      dateBlock.text.text = `\n  *${dayjs(this.day).format('MMMM DD, YYYY')}*  `;
     }
+    blocks.push(dateBlock);
 
     if (this.results[0] && this.results[0].length) {
       this.results[0].forEach((r) => {
@@ -109,20 +97,21 @@ export default class Payload {
     } else {
       blocks.push(nullBlock);
     }
-
     blocks.push(divider);
 
     if (this.isAuto) {
+      const nextDayText =
+        dayjs(this.day).day() === 5 || dayjs(this.day).day() === 6
+          ? '  *MONDAY*  '
+          : '  *TOMORROW*  ';
+      const nextDayDate = dayjs(Utils.getNextDay(this.day)).format('MMMM DD, YYYY');
       const secondHeader = {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: ' |   *TOMORROW*  |  '
+          text: `${nextDayText}| ${nextDayDate}  `
         }
       };
-      if (dayjs(this.day).day() === 5 || dayjs(this.day).day() === 6) {
-        secondHeader.text.text = ' |   *MONDAY*  |  ';
-      }
       blocks.push(secondHeader);
       if (this.results[1] && this.results[1].length) {
         this.results[1].forEach((r) => {
