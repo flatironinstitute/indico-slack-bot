@@ -47,7 +47,8 @@ app.command('/indico', async ({ command, ack, respond }) => {
 
   const param = {
     response_type: 'ephemeral',
-    blocks: content.blocks
+    blocks: content.blocks,
+    text: `Flatiron event update for ${dayjs(day).format('MMMM DD, YYYY')}`
   };
   // Post response visible only to requesting user
   await respond(param).catch((e) => logError(e));
@@ -64,7 +65,7 @@ const job = new CronJob(
   async () => {
     // eslint-disable-next-line no-console
     console.log('You will see this message every 2 minutes');
-    const today = Date.now();
+    const today = dayjs().format('MMMM DD, YYYY');
     let [content, contentErr] = await catchErrors(getDailyAutoMessage());
     if (contentErr) {
       content = errBlocks;
@@ -75,7 +76,8 @@ const job = new CronJob(
     app.client.chat.postMessage({
       channel: process.env.SLACK_CHANNEL,
       token: process.env.SLACK_BOT_TOKEN,
-      blocks: content.blocks
+      blocks: content.blocks,
+      text: `Flatiron event update for ${today}`
     });
   },
   null,
