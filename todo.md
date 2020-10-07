@@ -1,9 +1,8 @@
 # TODO:
 
-- Chronjob turn on.
+- Chronjob turn proper schedule.
 - Tests
 - Indico properties.
-- Replace moment.js see https://momentjs.com/docs/
 - Add pre-commit linting hooks.
 - Add modal for content submission.
 - Host @ FI
@@ -20,6 +19,7 @@
 - ESLint
 - Babel / packaging
 - New Lucy formatting on the payload js.
+- Replace moment.js with dayjs
 
   /\*\* Notes: Alternate Payload Styling
 

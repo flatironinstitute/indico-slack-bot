@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import moment from 'moment';
+import dayjs from 'dayjs';
 import * as Utils from './utils';
 
 export default class Payload {
@@ -44,7 +44,7 @@ export default class Payload {
       type: 'header',
       text: {
         type: 'plain_text',
-        text: `  ${moment(this.day).format('dddd, MMMM Do')}  `
+        text: `  ${dayjs(this.day).format('dddd, MMMM Do')}  `
       }
     };
 
@@ -52,7 +52,7 @@ export default class Payload {
       type: 'context',
       elements: [
         {
-          text: `*${moment(this.day).format('MMMM DD, YYYY')}*  |  :indico: Indico Bot`,
+          text: `*${dayjs(this.day).format('MMMM DD, YYYY')}*  |  :indico: Indico Bot`,
           type: 'mrkdwn'
         }
       ]
@@ -120,7 +120,7 @@ export default class Payload {
           text: ' |   *TOMORROW*  |  '
         }
       };
-      if (moment(this.day).day() === 5 || moment(this.day).day() === 6) {
+      if (dayjs(this.day).day() === 5 || dayjs(this.day).day() === 6) {
         secondHeader.text.text = ' |   *MONDAY*  |  ';
       }
       blocks.push(secondHeader);

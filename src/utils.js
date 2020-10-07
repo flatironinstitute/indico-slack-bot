@@ -1,5 +1,5 @@
 import * as chrono from 'chrono-node';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import * as HtmlToPlainText from './htmltoplaintext';
 
 /**
@@ -110,12 +110,12 @@ function getCenterEmojiString(result) {
  */
 function getNextDay(day) {
   let add = 1;
-  if (moment(day).day() === 5) {
+  if (dayjs(day).day() === 5) {
     add = 3;
-  } else if (moment(day).day() === 6) {
+  } else if (dayjs(day).day() === 6) {
     add = 2;
   }
-  const next = moment(day).add(add, 'days').format('YYYY-MM-DD');
+  const next = dayjs(day).add(add, 'days').format('YYYY-MM-DD');
   return next;
 }
 
