@@ -4,7 +4,7 @@ Bot that sends daily updates of Indico events to Slack.
 
 <!-- TODO: Add Travis & status -->
 
-![indico-bot-icon](https://github.com/lizlove/indico-slack-bot/blob/master/public/indico-bot-emoji.png =250x250)
+![indico-bot-icon](https://github.com/lizlove/indico-slack-bot/blob/master/public/indico-white-circle.png)
 
 Indico Slack Bot (ISB) is a [Bolt][bolt] bot that connects [Indico][indico] events to [Slack][slack]. ISB has two primary features:
 
