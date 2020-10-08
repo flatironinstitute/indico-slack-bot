@@ -2,7 +2,6 @@
 
 ## Todo
 
-- Tests
 - Host @ FI
 - Change frequency to daily from 2 min testing.
 
@@ -19,6 +18,8 @@
 - Replace moment.js with dayjs
 - Private tag
 - Get Indico items renamed by center in category. Done through October.
+
+- Tests
 
 # Icebox
 
