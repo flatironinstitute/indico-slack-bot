@@ -17,6 +17,8 @@ Indico Slack Bot (ISB) is a [Bolt][bolt] bot that connects [Indico][indico] even
 
 ## Installation
 
+Currently installation is only available via manual authorization on Slack. Should you wish to install this app on your own Indico instance, please contact the developer.
+
 <!-- TODO: ADD ADD TO SLACK BUTTON HERE -->
 
 ## Resources
