@@ -3,7 +3,7 @@
 ## Todo
 
 - Host @ FI git
-- AWS FI
+- AWS FI (Swap ngrok addies for AWS ones)
 - Add to SF Slack via IT (Balmes?)
 - Change frequency to daily from 2 min testing
 
