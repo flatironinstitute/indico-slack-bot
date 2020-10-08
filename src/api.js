@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import axios from 'axios';
 import { logError } from './utils';
 /**
@@ -8,7 +8,7 @@ import { logError } from './utils';
  */
 
 export default async function queryIndicoByDate(day) {
-  const formattedDay = moment(day).format('YYYY-MM-DD');
+  const formattedDay = dayjs(day).format('YYYY-MM-DD');
 
   const queryUrl = `https://indico.flatironinstitute.org/export/categ/0.json?apikey=${process.env.INDICO_KEY}&from=${formattedDay}&to=${formattedDay}&pretty=yes`;
   const res = await axios.get(queryUrl).catch((e) => logError(e));

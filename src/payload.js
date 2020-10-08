@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import moment from 'moment';
+import dayjs from 'dayjs';
 import * as Utils from './utils';
 
 export default class Payload {
@@ -26,7 +26,7 @@ export default class Payload {
     const timeArr = [result.startDate.time, result.endDate.time].map((t) => Utils.formatTime(t));
     const time = `\`${timeArr[0]}\``;
     const emoji = Utils.getCenterEmojiString(result);
-    const text = `${time} ${emoji} <${result.url} |*${result.title}*>`;
+    const text = `${time}  ${emoji} <${result.url} |*${result.title}*>`;
     return {
       type: 'section',
       text: {
@@ -36,28 +36,24 @@ export default class Payload {
     };
   }
 
+  /**
+   * Returns slack payload in blocks format.
+   * @return {object} payload Formatted Slack blocks.
+   */
   get assembled() {
+    // const contextBlock = {
+    //   type: 'context',
+    //   elements: [
+    //     {
+    //       text: `${dayjs(this.day).format('MMMM DD, YYYY')}  |  Flatiron Institute Events`,
+    //       type: 'mrkdwn'
+    //     }
+    //   ]
+    // };
+
     const divider = {
       type: 'divider'
     };
-    const firstHeader = {
-      type: 'header',
-      text: {
-        type: 'plain_text',
-        text: `  ${moment(this.day).format('dddd, MMMM Do')}  `
-      }
-    };
-
-    const contextHeader = {
-      type: 'context',
-      elements: [
-        {
-          text: `**${moment(this.day).format('MMMM DD, YYYY')}**  |  Indico Bot`,
-          type: 'mrkdwn'
-        }
-      ]
-    };
-
     const nullBlock = {
       type: 'section',
       text: {
@@ -65,41 +61,30 @@ export default class Payload {
         text: '_No events scheduled._'
       }
     };
-
     const dateBlock = {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: ' |   *TODAY*  |  '
+        text: `  *Today*  |  ${dayjs(this.day).format('MMMM DD, YYYY')}  `
       }
     };
-
     const finalBlock = {
       type: 'context',
       elements: [
         {
           type: 'mrkdwn',
           text:
-            ":pushpin: Do you have something to include in #fi-events? Here's <http://www.foo.com|*how to submit content*>."
+            ':pushpin: Do you have something to include in #fi-events? Contact <mailto:aschneider@flatironinstitute.org?subject=Add Event to Indico via #fi-events |*Flatiron Admin*>.'
         }
       ]
     };
-
     const blocks = [];
-    if (this.isAuto) {
-      firstHeader.text.text = '  Flatiron Events  ';
-    }
-    blocks.push(firstHeader);
 
-    if (this.isAuto) {
-      blocks.push(contextHeader);
+    // Start slash command responses with date
+    if (!this.isAuto) {
+      dateBlock.text.text = `\n  *${dayjs(this.day).format('MMMM DD, YYYY')}*  `;
     }
-
-    blocks.push(divider);
-
-    if (this.isAuto) {
-      blocks.push(dateBlock);
-    }
+    blocks.push(dateBlock);
 
     if (this.results[0] && this.results[0].length) {
       this.results[0].forEach((r) => {
@@ -110,19 +95,20 @@ export default class Payload {
       blocks.push(nullBlock);
     }
 
-    blocks.push(divider);
-
+    // Second section of next biz day events for auto daily messages
     if (this.isAuto) {
+      const nextDayText =
+        dayjs(this.day).day() === 5 || dayjs(this.day).day() === 6
+          ? '  *Monday*  '
+          : '  *Tomorrow*  ';
+      const nextDayDate = dayjs(Utils.getNextDay(this.day)).format('MMMM DD, YYYY');
       const secondHeader = {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: ' |   *TOMORROW*  |  '
+          text: `\n \n ${nextDayText}| ${nextDayDate}  `
         }
       };
-      if (moment(this.day).day() === 5 || moment(this.day).day() === 6) {
-        secondHeader.text.text = ' |   *MONDAY*  |  ';
-      }
       blocks.push(secondHeader);
       if (this.results[1] && this.results[1].length) {
         this.results[1].forEach((r) => {
@@ -132,8 +118,9 @@ export default class Payload {
       } else {
         blocks.push(nullBlock);
       }
-      blocks.push(divider);
     }
+
+    blocks.push(divider);
     blocks.push(finalBlock);
     const payload = {
       blocks
