@@ -3,6 +3,32 @@ import { logError, getNextDay } from './utils';
 import Payload from './payload';
 
 /**
+ * Confirm if a result does not contain a test entry.
+ * @param {object} result Indico result data object.
+ * @return {boolean} isTest Boolean.
+ */
+function isValid(result) {
+  const isTest =
+    // eslint-disable-next-line no-prototype-builtins
+    result.hasOwnProperty('category') && result.category.toLowerCase().indexOf('test') === -1;
+  return isTest;
+}
+
+/**
+ * Confirm if an event is open by searching for closed keyword.
+ * @param {array} keywords Array of strings.
+ * @return {boolean} openess Boolean.
+ */
+function isOpen(result) {
+  let openness = true;
+  if (result.keywords.length) {
+    const closedArr = result.keywords.filter((keyword) => keyword.toLowerCase().includes('close'));
+    openness = !closedArr.length;
+  }
+  return openness;
+}
+
+/**
  * Remove test events from Indico response object.
  * @param {object} res Indico event data API response.
  * @return {array} events Filtered event array.
@@ -11,11 +37,7 @@ function parseIndicoResponse(res) {
   if (res.results) {
     const events = [];
     res.results.forEach((result) => {
-      if (
-        // eslint-disable-next-line no-prototype-builtins
-        result.hasOwnProperty('category') &&
-        result.category.toLowerCase().indexOf('test') === -1
-      ) {
+      if (isValid(result) && isOpen(result)) {
         events.push(result);
       }
     });
