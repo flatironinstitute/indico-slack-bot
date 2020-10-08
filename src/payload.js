@@ -74,7 +74,7 @@ export default class Payload {
         {
           type: 'mrkdwn',
           text:
-            ":pushpin: Do you have something to include in #fi-events? Here's <http://www.foo.com|*how to submit content*>."
+            ':pushpin: Do you have something to include in #fi-events? Contact <mailto:aschneider@flatironinstitute.org?subject=Add Event to Indico via #fi-events |*Flatiron Admin*>.'
         }
       ]
     };
