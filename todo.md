@@ -1,17 +1,14 @@
-# TODO:
+# Indico-Slack-Bot Notes
+
+## Todo
 
 - Tests
-- Indico properties.
-- Add pre-commit linting hooks.
-- Add modal for content submission.
 - Host @ FI
-- Add App Home
 
-## Not in code todo
+## Todo not in code (for admins):
 
 - Get Indico items renamed by center in category.
 - List sheet for the admins.
-- Private tag
 - Calendar subscriptions
 
 # Done
@@ -20,28 +17,21 @@
 - Babel / packaging
 - New Lucy formatting on the payload js.
 - Replace moment.js with dayjs
+- Private tag
 
-  /\*\* Notes: Alternate Payload Styling
+# Icebox
 
-  - _Tuesday, September 22:_ < url | 160 Speaker Series: Grant Sanderson>
-  - Start: 4: 00 PM September 22 2020
-  - End: 5: 00 PM September 22 2020
-  - Location: Zoom Webinar
-  - Contact: ewood @simonsfoundation.org
-    \*/
+- Add pre-commit linting hooks.
+- Add App Home
+- Add modal for content submission.
 
-## Lucy Questions
+# Misc Notes:
 
-1. Keep the locations if everything is remote?
-   (remove/comment out)
-2. Learn more / RSVP / Something else?
+/\*\* Alternate Payload Styling
 
-- Remove buttons and make into links.
-
-3. Icons as circles (FI as circle)
-
-- Lucy to send.
-
-4. Sparkles
-
-- No emoji
+- _Tuesday, September 22:_ < url | 160 Speaker Series: Grant Sanderson>
+- Start: 4: 00 PM September 22 2020
+- End: 5: 00 PM September 22 2020
+- Location: Zoom Webinar
+- Contact: ewood @simonsfoundation.org
+  \*/
