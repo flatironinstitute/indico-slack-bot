@@ -1,11 +1,11 @@
 # TODO:
 
-- Chronjob turn proper schedule.
 - Tests
 - Indico properties.
 - Add pre-commit linting hooks.
 - Add modal for content submission.
 - Host @ FI
+- Add App Home
 
 ## Not in code todo
 

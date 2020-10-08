@@ -18,35 +18,6 @@ function convert(htmlText) {
     return result;
   };
 
-  // or accept user defined config
-  // TODO: Test if I can remove
-  // if (!!styleConfig) {
-  //   if (typeof styleConfig.linkProcess === "function") {
-  //     linkProcess = styleConfig.linkProcess;
-  //   }
-  //   if (typeof styleConfig.imgProcess === "function") {
-  //     imgProcess = styleConfig.imgProcess;
-  //   }
-  //   if (!!styleConfig.headingStyle) {
-  //     headingStyle = styleConfig.headingStyle;
-  //   }
-  //   if (!!styleConfig.listStyle) {
-  //     listStyle = styleConfig.listStyle;
-  //   }
-  //   if (!!styleConfig.uIndentionChar) {
-  //     uIndentionChar = styleConfig.uIndentionChar;
-  //   }
-  //   if (!!styleConfig.listIndentionTabs) {
-  //     listIndentionTabs = styleConfig.listIndentionTabs;
-  //   }
-  //   if (!!styleConfig.oIndentionChar) {
-  //     oIndentionChar = styleConfig.oIndentionChar;
-  //   }
-  //   if (!!styleConfig.keepNbsps) {
-  //     keepNbsps = styleConfig.keepNbsps;
-  //   }
-  // }
-
   // removel all \n linebreaks
   let tmp = String(htmlText).replace(/\n|\r/g, ' ');
 

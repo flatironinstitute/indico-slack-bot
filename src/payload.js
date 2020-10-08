@@ -36,17 +36,24 @@ export default class Payload {
     };
   }
 
+  /**
+   * Returns slack payload in blocks format.
+   * @return {object} payload Formatted Slack blocks.
+   */
   get assembled() {
+    // const contextBlock = {
+    //   type: 'context',
+    //   elements: [
+    //     {
+    //       text: `${dayjs(this.day).format('MMMM DD, YYYY')}  |  Flatiron Institute Events`,
+    //       type: 'mrkdwn'
+    //     }
+    //   ]
+    // };
+
     const divider = {
       type: 'divider'
     };
-    // const spacer = {
-    //   type: 'header',
-    //   text: {
-    //     type: 'plain_text',
-    //     text: `  ${dayjs(this.day).format('dddd, MMMM Do')}  `
-    //   }
-    // };
     const nullBlock = {
       type: 'section',
       text: {
@@ -58,7 +65,7 @@ export default class Payload {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: `  *TODAY*  |  ${dayjs(this.day).format('MMMM DD, YYYY')}  `
+        text: `  *Today*  |  ${dayjs(this.day).format('MMMM DD, YYYY')}  `
       }
     };
     const finalBlock = {
@@ -73,17 +80,7 @@ export default class Payload {
     };
     const blocks = [];
 
-    // if (this.isAuto) {
-    //   firstHeader.text.text = '  Flatiron Events  ';
-    // }
-    // blocks.push(firstHeader);
-
-    // if (this.isAuto) {
-    //   blocks.push(contextHeader);
-    // }
-
-    // blocks.push(divider);
-
+    // Start slash command responses with date
     if (!this.isAuto) {
       dateBlock.text.text = `\n  *${dayjs(this.day).format('MMMM DD, YYYY')}*  `;
     }
@@ -97,19 +94,19 @@ export default class Payload {
     } else {
       blocks.push(nullBlock);
     }
-    blocks.push(divider);
 
+    // Second section of next biz day events for auto daily messages
     if (this.isAuto) {
       const nextDayText =
         dayjs(this.day).day() === 5 || dayjs(this.day).day() === 6
-          ? '  *MONDAY*  '
-          : '  *TOMORROW*  ';
+          ? '  *Monday*  '
+          : '  *Tomorrow*  ';
       const nextDayDate = dayjs(Utils.getNextDay(this.day)).format('MMMM DD, YYYY');
       const secondHeader = {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: `${nextDayText}| ${nextDayDate}  `
+          text: `\n \n ${nextDayText}| ${nextDayDate}  `
         }
       };
       blocks.push(secondHeader);
@@ -121,8 +118,9 @@ export default class Payload {
       } else {
         blocks.push(nullBlock);
       }
-      blocks.push(divider);
     }
+
+    blocks.push(divider);
     blocks.push(finalBlock);
     const payload = {
       blocks
