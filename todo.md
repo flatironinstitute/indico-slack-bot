@@ -4,10 +4,10 @@
 
 - Tests
 - Host @ FI
+- Change frequency to daily from 2 min testing.
 
 ## Todo not in code (for admins):
 
-- Get Indico items renamed by center in category.
 - List sheet for the admins.
 - Calendar subscriptions
 
@@ -18,6 +18,7 @@
 - New Lucy formatting on the payload js.
 - Replace moment.js with dayjs
 - Private tag
+- Get Indico items renamed by center in category. Done through October.
 
 # Icebox
 
