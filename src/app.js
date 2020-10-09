@@ -5,6 +5,7 @@ import { buildSlashResponse, getDailyAutoMessage } from './fabricator';
 
 const { App, ExpressReceiver } = require('@slack/bolt');
 const { CronJob } = require('cron');
+const path = require('path');
 
 require('dotenv').config();
 
@@ -21,6 +22,17 @@ const app = new App({
 receiver.router.post('/secret', (req, res) => {
   // You're working with an express req and res now.
   res.send('boo! 👻');
+});
+
+// Secret testing page
+receiver.router.post('/secret', (req, res) => {
+  // You're working with an express req and res now.
+  res.send('boo! 👻');
+});
+
+// landing page
+receiver.router.post('/', (req, res) => {
+  res.sendFile(path.join(`${__dirname}/index.html`));
 });
 
 const errBlocks = {
