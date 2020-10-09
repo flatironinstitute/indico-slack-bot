@@ -2,8 +2,7 @@
 
 ## Todo
 
-- Add express reciever for testing AWS
-- AWS FI (Swap ngrok addies for AWS ones)
+- DNS at .flatironinstitute.org (ancible and IT via email).
 - Add to SF Slack via IT (Balmes?)
 - Change frequency to daily from 2 min testing
 
@@ -22,6 +21,7 @@
 - Private tag
 - Get Indico items renamed by center in category. [Done through October.]
 - Host @ FI git
+- AWS FI (Swap ngrok addies for AWS ones)
 
 # Icebox
 
@@ -29,6 +29,7 @@
 - Add App Home
 - Add modal for content submission.
 - Write more tests
+- Add landing page with express reciever
 
 # Misc Notes:
 
