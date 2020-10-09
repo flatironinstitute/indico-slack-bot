@@ -2,13 +2,15 @@
 
 ## Todo
 
-- Host @ FI
-- Change frequency to daily from 2 min testing.
+- DNS at .flatironinstitute.org (ancible and IT via email).
+- Add to SF Slack via IT (Balmes?)
+- Change frequency to daily from 2 min testing
 
-## Todo not in code (for admins):
+## For admins:
 
-- List sheet for the admins.
+- How-to sheet
 - Calendar subscriptions
+- USA datetime formatting
 
 # Done
 
@@ -17,15 +19,17 @@
 - New Lucy formatting on the payload js.
 - Replace moment.js with dayjs
 - Private tag
-- Get Indico items renamed by center in category. Done through October.
-
-- Tests
+- Get Indico items renamed by center in category. [Done through October.]
+- Host @ FI git
+- AWS FI (Swap ngrok addies for AWS ones)
 
 # Icebox
 
 - Add pre-commit linting hooks.
 - Add App Home
 - Add modal for content submission.
+- Write more tests
+- Add landing page with express reciever
 
 # Misc Notes:
 

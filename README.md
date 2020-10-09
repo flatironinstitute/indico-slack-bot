@@ -4,9 +4,11 @@ Bot that sends daily updates of Indico events to Slack.
 
 <!-- TODO: Add Travis & status -->
 
+![indico-bot-icon](https://github.com/lizlove/indico-slack-bot/blob/master/public/indico-white-circle.png)
+
 Indico Slack Bot (ISB) is a [Bolt][bolt] bot that connects [Indico][indico] events to [Slack][slack]. ISB has two primary features:
 
-1. Automated messages that promote the day's events in the designated slack channel (#fi-slack).
+1. Automated messages that promote the day's events in the designated slack channel (#fi-events).
 2. A slash command `/indico [DATE]` that returns events for the date specified.
 
 [bolt]: https://github.com/SlackAPI/bolt-js
@@ -14,6 +16,8 @@ Indico Slack Bot (ISB) is a [Bolt][bolt] bot that connects [Indico][indico] even
 [slack]: https://slack.com/
 
 ## Installation
+
+Currently installation is only available via manual authorization on Slack. Should you wish to install this app on your own Indico instance, please contact the developer.
 
 <!-- TODO: ADD ADD TO SLACK BUTTON HERE -->
 

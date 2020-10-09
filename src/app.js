@@ -3,15 +3,24 @@ import dayjs from 'dayjs';
 import { catchErrors, parseIncomingDate, logError } from './utils';
 import { buildSlashResponse, getDailyAutoMessage } from './fabricator';
 
-const { App } = require('@slack/bolt');
+const { App, ExpressReceiver } = require('@slack/bolt');
 const { CronJob } = require('cron');
 
 require('dotenv').config();
 
+// Create a Bolt Receiver
+const receiver = new ExpressReceiver({ signingSecret: process.env.SLACK_SIGNING_SECRET });
+
 // Initialize app
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
-  signingSecret: process.env.SLACK_SIGNING_SECRET
+  receiver
+});
+
+// Secret testing page
+receiver.router.post('/secret', (req, res) => {
+  // You're working with an express req and res now.
+  res.send('boo! 👻');
 });
 
 const errBlocks = {
