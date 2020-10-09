@@ -12,5 +12,6 @@ export default async function queryIndicoByDate(day) {
 
   const queryUrl = `https://indico.flatironinstitute.org/export/categ/0.json?apikey=${process.env.INDICO_KEY}&from=${formattedDay}&to=${formattedDay}&pretty=yes`;
   const res = await axios.get(queryUrl).catch((e) => logError(e));
+  // eslint-disable-next-line no-console
   return res.data;
 }

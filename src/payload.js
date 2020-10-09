@@ -41,16 +41,6 @@ export default class Payload {
    * @return {object} payload Formatted Slack blocks.
    */
   get assembled() {
-    // const contextBlock = {
-    //   type: 'context',
-    //   elements: [
-    //     {
-    //       text: `${dayjs(this.day).format('MMMM DD, YYYY')}  |  Flatiron Institute Events`,
-    //       type: 'mrkdwn'
-    //     }
-    //   ]
-    // };
-
     const divider = {
       type: 'divider'
     };
