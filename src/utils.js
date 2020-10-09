@@ -44,7 +44,6 @@ function formatTime(time) {
  */
 function logError(error) {
   /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
-  console.error('⚠️ Error: ', error);
   throw new Error(error);
 }
 
