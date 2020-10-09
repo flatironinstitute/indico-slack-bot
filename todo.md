@@ -2,7 +2,7 @@
 
 ## Todo
 
-- Host @ FI git
+- Add express reciever for testing AWS
 - AWS FI (Swap ngrok addies for AWS ones)
 - Add to SF Slack via IT (Balmes?)
 - Change frequency to daily from 2 min testing
@@ -20,7 +20,8 @@
 - New Lucy formatting on the payload js.
 - Replace moment.js with dayjs
 - Private tag
-- Get Indico items renamed by center in category. Done through October.
+- Get Indico items renamed by center in category. [Done through October.]
+- Host @ FI git
 
 # Icebox
 
