@@ -66,6 +66,9 @@ app.command('/indico', async ({ command, ack, respond }) => {
     logError(contentErr);
   }
 
+  // eslint-disable-next-line no-console
+  console.log('Slash command info', command);
+
   const param = {
     response_type: 'ephemeral',
     blocks: content.blocks,
@@ -82,10 +85,10 @@ app.command('/indico', async ({ command, ack, respond }) => {
  *'00 01 08 * * 1-5'
  */
 const job = new CronJob(
-  '0 */2 * * * *',
+  '0 */20 * * * *',
   async () => {
     // eslint-disable-next-line no-console
-    console.log('You will see this message every 2 minutes');
+    console.log('You will see this message every 20 minutes');
     const today = dayjs().format('MMMM DD, YYYY');
     let [content, contentErr] = await catchErrors(getDailyAutoMessage());
     if (contentErr) {
