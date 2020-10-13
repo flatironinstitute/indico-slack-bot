@@ -28,6 +28,9 @@ function formatTime(time) {
     arr[0] -= 12;
     arr[2] = 'PM';
   } else {
+    if (arr[0] < 10) {
+      arr[0].replace(/^0+/, '');
+    }
     arr[2] = 'AM';
   }
   if (arr[1] === '00') {

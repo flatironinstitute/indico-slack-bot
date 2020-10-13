@@ -70,7 +70,7 @@ app.command('/indico', async ({ command, ack, respond }) => {
  *'00 01 08 * * 1-5'
  */
 const job = new CronJob(
-  '0 */10 * * * *',
+  '00 01 08 * * 1-5',
   async () => {
     const today = dayjs().format('MMMM DD, YYYY');
     let [content, contentErr] = await catchErrors(getDailyAutoMessage());
