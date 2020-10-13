@@ -98,7 +98,7 @@ job.start();
 
 (async () => {
   // Start the app
-  await app.start(process.env.PORT || 3000);
+  await app.start(process.env.PORT || 443);
   /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
   console.warn('🤖 Indico Bot is running!');
 })();
