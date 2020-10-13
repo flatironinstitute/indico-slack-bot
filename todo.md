@@ -2,15 +2,7 @@
 
 ## Todo
 
-- DNS at .flatironinstitute.org (ancible and IT via email).
-- Add to SF Slack via IT (Balmes?)
-- Change frequency to daily from 2 min testing
-
-## For admins:
-
-- How-to sheet
-- Calendar subscriptions
-- USA datetime formatting
+- DNS to Balmes at .flatironinstitute.org (ancible and IT via email).
 
 # Done
 
@@ -22,6 +14,10 @@
 - Get Indico items renamed by center in category. [Done through October.]
 - Host @ FI git
 - AWS FI (Swap ngrok addies for AWS ones)
+- Add to SF Slack via IT (Balmes?)
+- Change frequency to daily from 2 min testing
+- How-to sheet
+- Calendar subscriptions
 
 # Icebox
 
@@ -30,6 +26,7 @@
 - Add modal for content submission.
 - Write more tests
 - Add landing page with express reciever
+- USA datetime formatting
 
 # Misc Notes:
 
