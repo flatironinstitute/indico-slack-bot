@@ -18,18 +18,6 @@ const app = new App({
   receiver
 });
 
-// Secret testing page
-receiver.router.post('/secret', (req, res) => {
-  // You're working with an express req and res now.
-  res.send('boo! 👻');
-});
-
-// Secret testing page
-receiver.router.post('/secret', (req, res) => {
-  // You're working with an express req and res now.
-  res.send('boo! 👻');
-});
-
 // landing page
 receiver.router.post('/', (req, res) => {
   res.sendFile(path.join(`${__dirname}/index.html`));
@@ -66,9 +54,6 @@ app.command('/indico', async ({ command, ack, respond }) => {
     logError(contentErr);
   }
 
-  // eslint-disable-next-line no-console
-  console.log('Slash command info', command);
-
   const param = {
     response_type: 'ephemeral',
     blocks: content.blocks,
@@ -85,10 +70,8 @@ app.command('/indico', async ({ command, ack, respond }) => {
  *'00 01 08 * * 1-5'
  */
 const job = new CronJob(
-  '0 */20 * * * *',
+  '00 01 08 * * 1-5',
   async () => {
-    // eslint-disable-next-line no-console
-    console.log('You will see this message every 20 minutes');
     const today = dayjs().format('MMMM DD, YYYY');
     let [content, contentErr] = await catchErrors(getDailyAutoMessage());
     if (contentErr) {
@@ -103,6 +86,9 @@ const job = new CronJob(
       blocks: content.blocks,
       text: `Flatiron event update for ${today}`
     });
+
+    // eslint-disable-next-line no-console
+    console.log(`✨ Daily #fi-events message sent for ${today}.`);
   },
   null,
   true,
@@ -112,7 +98,7 @@ job.start();
 
 (async () => {
   // Start the app
-  await app.start(process.env.PORT || 3000);
+  await app.start(process.env.PORT || 443);
   /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
-  console.warn('🤖  Indico Bot is running!');
+  console.warn('🤖 Indico Bot is running!');
 })();
