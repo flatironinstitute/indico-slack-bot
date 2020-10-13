@@ -28,10 +28,11 @@ function formatTime(time) {
     arr[0] -= 12;
     arr[2] = 'PM';
   } else {
-    if (arr[0] < 10) {
-      arr[0].replace(/^0+/, '');
-    }
     arr[2] = 'AM';
+  }
+  // Remove leading 0 from hours.
+  if (arr[0] < 10) {
+    parseInt(arr[0].toString().replace(/^0+/, ''), 10);
   }
   if (arr[1] === '00') {
     ftime = `${arr[0]} ${arr[2]}`;
