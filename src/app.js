@@ -70,10 +70,8 @@ app.command('/indico', async ({ command, ack, respond }) => {
  *'00 01 08 * * 1-5'
  */
 const job = new CronJob(
-  '0 */2 * * * *',
+  '0 */10 * * * *',
   async () => {
-    // eslint-disable-next-line no-console
-    console.log('You will see this message every 20 minutes');
     const today = dayjs().format('MMMM DD, YYYY');
     let [content, contentErr] = await catchErrors(getDailyAutoMessage());
     if (contentErr) {
@@ -88,6 +86,9 @@ const job = new CronJob(
       blocks: content.blocks,
       text: `Flatiron event update for ${today}`
     });
+
+    // eslint-disable-next-line no-console
+    console.log(`✨ Daily #fi-events message sent for ${today}.`);
   },
   null,
   true,
@@ -99,5 +100,5 @@ job.start();
   // Start the app
   await app.start(process.env.PORT || 3000);
   /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
-  console.warn('🤖  Indico Bot is running!');
+  console.warn('🤖 Indico Bot is running!');
 })();
