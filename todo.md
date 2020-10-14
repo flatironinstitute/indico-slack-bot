@@ -2,6 +2,8 @@
 
 ## Todo
 
+- Add healthchecks to the AWS instance.
+- Convert to AWS Lambda?
 - DNS to Balmes at .flatironinstitute.org (ancible and IT via email).
 
 # Done
