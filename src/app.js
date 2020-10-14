@@ -1,22 +1,10 @@
 // eslint-disable no-unused-vars
 import dayjs from 'dayjs';
-import {
-  catchErrors,
-  parseIncomingDate,
-  logError
-} from './utils';
-import {
-  buildSlashResponse,
-  getDailyAutoMessage
-} from './fabricator';
+import { catchErrors, parseIncomingDate, logError } from './utils';
+import { buildSlashResponse, getDailyAutoMessage } from './fabricator';
 
-const {
-  App,
-  ExpressReceiver
-} = require('@slack/bolt');
-const {
-  CronJob
-} = require('cron');
+const { App, ExpressReceiver } = require('@slack/bolt');
+const { CronJob } = require('cron');
 const path = require('path');
 
 require('dotenv').config();
@@ -33,35 +21,31 @@ const app = new App({
 });
 
 // landing page
-receiver.router.post('/', (req, res) => {
+receiver.router.get('/', (req, res) => {
   res.sendFile(path.join(`${__dirname}/index.html`));
 });
 
 const errBlocks = {
-  blocks: [{
-    type: 'section',
-    text: {
-      type: 'mrkdwn',
-      text: "I'm sorry, but I'm unable to connect to Indico. Please <mailto:scicomp@flatironinstitute.org|contact the admin> or try again shortly."
+  blocks: [
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text:
+          "I'm sorry, but I'm unable to connect to Indico. Please <mailto:scicomp@flatironinstitute.org|contact the admin> or try again shortly."
+      }
     }
-  }]
+  ]
 };
 
-app.message('hello', async ({
-  message,
-  say
-}) => {
+app.message('hello', async ({ message, say }) => {
   await say(
     `Hello <@${message.user}>! I'm the Indico bot. :indico: I post daily updates to the \`#fi-events\` channel about what's going on at Flatiron. \n You can also ask me about future events by typing  \`/indico\`  followed by a date. `
   ).catch((e) => logError(e));
 });
 
 // The slash command provides event info for a specific date.
-app.command('/indico', async ({
-  command,
-  ack,
-  respond
-}) => {
+app.command('/indico', async ({ command, ack, respond }) => {
   // Acknowledge command request
   await ack();
   const day = parseIncomingDate(command.text);
@@ -90,27 +74,27 @@ app.command('/indico', async ({
 const job = new CronJob(
   '00 01 08 * * 1-5',
   async () => {
-      const today = dayjs().format('MMMM DD, YYYY');
-      let [content, contentErr] = await catchErrors(getDailyAutoMessage());
-      if (contentErr) {
-        content = errBlocks;
-        contentErr += `CronJob @ ${Date.now()}`;
-        logError(contentErr);
-      }
+    const today = dayjs().format('MMMM DD, YYYY');
+    let [content, contentErr] = await catchErrors(getDailyAutoMessage());
+    if (contentErr) {
+      content = errBlocks;
+      contentErr += `CronJob @ ${Date.now()}`;
+      logError(contentErr);
+    }
 
-      app.client.chat.postMessage({
-        channel: process.env.SLACK_CHANNEL,
-        token: process.env.SLACK_BOT_TOKEN,
-        blocks: content.blocks,
-        text: `Flatiron event update for ${today}`
-      });
+    app.client.chat.postMessage({
+      channel: process.env.SLACK_CHANNEL,
+      token: process.env.SLACK_BOT_TOKEN,
+      blocks: content.blocks,
+      text: `Flatiron event update for ${today}`
+    });
 
-      // eslint-disable-next-line no-console
-      console.log(`✨ Daily #fi-events message sent for ${today}.`);
-    },
-    null,
-    true,
-    'America/New_York'
+    // eslint-disable-next-line no-console
+    console.log(`✨ Daily #fi-events message sent for ${today}.`);
+  },
+  null,
+  true,
+  'America/New_York'
 );
 job.start();
 
