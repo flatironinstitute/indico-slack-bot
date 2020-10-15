@@ -3,8 +3,6 @@ module.exports = {
     {
       name: 'indico-slack-bot',
       script: './dist/app.js',
-      instances: 'max',
-      max_memory_restart: '256M',
       env: {
         NODE_ENV: 'development'
       },
