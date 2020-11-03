@@ -3,8 +3,6 @@
 ## Todo
 
 - Add healthchecks to the AWS instance.
-- Convert to AWS Lambda?
-- DNS to Balmes at .flatironinstitute.org (ancible and IT via email).
 
 # Done
 
@@ -29,6 +27,8 @@
 - Write more tests
 - Add landing page with express reciever
 - USA datetime formatting
+- DNS to Balmes at .flatironinstitute.org (ancible and IT via email).
+- Convert to AWS Lambda?
 
 # Misc Notes:
 
