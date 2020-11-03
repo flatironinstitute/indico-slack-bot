@@ -100,6 +100,9 @@ function getCenterEmojiString(result) {
       case cat.includes('star'):
         emojiStr = ':lodestar-circle:';
         break;
+      case cat.includes('sf'):
+        emojiStr = ':sf-circle:';
+        break;
       default: // do nothing
     }
   }
