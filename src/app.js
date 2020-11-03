@@ -103,5 +103,5 @@ job.start();
   const port = process.env.PORT || 3000;
   await app.start(port);
   /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
-  console.warn(`🤖 Indico Bot is running on ${port} with pm2 startup.`);
+  console.warn(`🤖 Indico Bot is running on ${port} with pm2 startup and :sf-circle:`);
 })();
