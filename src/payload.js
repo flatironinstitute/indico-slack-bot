@@ -18,13 +18,27 @@ export default class Payload {
   }
 
   /**
+   * Confirm if an end time should display by searching for end keyword.
+   * @param {array} results Array of strings.
+   * @return {boolean} showEnd Boolean.
+   */
+  showEnd(result) {
+    let showEnd = false;
+    if (result.keywords.length) {
+      const showEndArr = result.keywords.filter((keyword) => keyword.toLowerCase().includes('end'));
+      showEnd = !!showEndArr.length;
+    }
+    return showEnd;
+  }
+
+  /**
    * Wraps assembles the results block.
    * @param {object} result Indico results object.
    * @return {object} block Formatted Slack block.
    */
   assembleResultBlock(result) {
     const timeArr = [result.startDate.time, result.endDate.time].map((t) => Utils.formatTime(t));
-    const time = `\`${timeArr[0]}\``;
+    const time = this.showEnd(result) ? `\`${timeArr[1]}\` End` : `\`${timeArr[0]}\``;
     const emoji = Utils.getCenterEmojiString(result);
     const text = `${time}  ${emoji} <${result.url} |*${result.title}*>`;
     return {
