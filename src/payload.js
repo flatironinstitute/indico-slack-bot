@@ -38,7 +38,7 @@ export default class Payload {
    */
   assembleResultBlock(result) {
     const timeArr = [result.startDate.time, result.endDate.time].map((t) => Utils.formatTime(t));
-    const time = this.showEnd(result) ? `\`${timeArr[1]}\` End` : `\`${timeArr[0]}\``;
+    const time = this.showEnd(result) ? `*End:* \`${timeArr[1]}\`` : `\`${timeArr[0]}\``;
     const emoji = Utils.getCenterEmojiString(result);
     const text = `${time}  ${emoji} <${result.url} |*${result.title}*>`;
     return {
