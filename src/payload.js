@@ -38,7 +38,7 @@ export default class Payload {
    */
   assembleResultBlock(result) {
     const timeArr = [result.startDate.time, result.endDate.time].map((t) => Utils.formatTime(t));
-    const time = this.showEnd(result) ? `\`Ending at: ${timeArr[1]}\`` : `\`${timeArr[0]}\``;
+    const time = this.showEnd(result) ? `\`Ending at ${timeArr[1]}\`` : `\`${timeArr[0]}\``;
     const emoji = Utils.getCenterEmojiString(result);
     const text = `${time}  ${emoji} <${result.url} |*${result.title}*>`;
     return {
@@ -91,6 +91,9 @@ export default class Payload {
     blocks.push(dateBlock);
 
     if (this.results[0] && this.results[0].length) {
+      this.results[0].sort((a, b) =>
+        dayjs(a.startDate.time).isAfter(dayjs(b.startDate.time)) ? 1 : -1
+      );
       this.results[0].forEach((r) => {
         const block = this.assembleResultBlock(r);
         blocks.push(block);
@@ -115,6 +118,9 @@ export default class Payload {
       };
       blocks.push(secondHeader);
       if (this.results[1] && this.results[1].length) {
+        this.results[0].sort((a, b) =>
+          dayjs(a.startDate.time).isAfter(dayjs(b.startDate.time)) ? 1 : -1
+        );
         this.results[1].forEach((r) => {
           const block = this.assembleResultBlock(r);
           blocks.push(block);
