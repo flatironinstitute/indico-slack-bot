@@ -91,6 +91,9 @@ export default class Payload {
     blocks.push(dateBlock);
 
     if (this.results[0] && this.results[0].length) {
+      this.results[0].sort((a, b) =>
+        dayjs(a.startDate.time).isAfter(dayjs(b.startDate.time)) ? 1 : -1
+      );
       this.results[0].forEach((r) => {
         const block = this.assembleResultBlock(r);
         blocks.push(block);
@@ -115,6 +118,9 @@ export default class Payload {
       };
       blocks.push(secondHeader);
       if (this.results[1] && this.results[1].length) {
+        this.results[0].sort((a, b) =>
+          dayjs(a.startDate.time).isAfter(dayjs(b.startDate.time)) ? 1 : -1
+        );
         this.results[1].forEach((r) => {
           const block = this.assembleResultBlock(r);
           blocks.push(block);
