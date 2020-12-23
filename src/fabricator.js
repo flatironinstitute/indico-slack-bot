@@ -54,7 +54,7 @@ function parseIndicoResponse(res) {
 async function buildSlashResponse(day) {
   const res = await queryIndicoByDate(day).catch((e) => logError(e));
   const results = parseIndicoResponse(res);
-  const payload = new Payload(day, [results], false);
+  const payload = new Payload(day, [results], false, false);
   const message = payload.assembled;
   return message;
 }
@@ -78,9 +78,20 @@ async function getDailyAutoMessage() {
       return parseIndicoResponse(res);
     })
   ).catch((e) => logError(e));
-  const payload = new Payload(day, results, true);
+  const payload = new Payload(day, results, true, false);
   const message = payload.assembled;
   return message;
 }
 
-export { buildSlashResponse, parseIndicoResponse, getDailyAutoMessage };
+/**
+ * Function to generate seasonal holiday closure message.
+ * @return {object} payload The payload text for a slack response.
+ */
+async function getHolidayMessage() {
+  const day = new Date();
+  const payload = new Payload(day, [], false, true);
+  const message = payload.assembled;
+  return message;
+}
+
+export { buildSlashResponse, parseIndicoResponse, getDailyAutoMessage, getHolidayMessage };

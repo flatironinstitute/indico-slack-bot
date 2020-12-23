@@ -10,11 +10,12 @@ export default class Payload {
    * @param {boolean} isAuto Is payload for a slash event or auto alert.
    * @return {object} payload Event payload formatted as a json blocks.
    */
-  constructor(day, results, isAuto) {
+  constructor(day, results, isAuto, isHoliday) {
     this.day = day;
     this.results = results;
     this.isAuto = isAuto;
     this.thePayload = null;
+    this.isHoliday = isHoliday;
   }
 
   /**
@@ -82,6 +83,22 @@ export default class Payload {
         }
       ]
     };
+    const holidayBlock1 = {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text:
+          '`12/24 - 1/3` :snowflake: <https://simonsfoundation.interactgo.com/Interact/Pages/Content/Document.aspx?id=7443 |*Holiday Office Closure*> :snowflake:'
+      }
+    };
+    const holidayBlock2 = {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text:
+          'Daily update posts are suspended until January 4th. (Even bots :indico: need a break.) Happy holidays - see you next year! :confetti_ball:'
+      }
+    };
     const blocks = [];
 
     // Start slash command responses with date
@@ -98,6 +115,9 @@ export default class Payload {
         const block = this.assembleResultBlock(r);
         blocks.push(block);
       });
+      // If this is the first day of holiday, send the holiday away message.
+    } else if (this.isHoliday) {
+      blocks.push(holidayBlock1, holidayBlock2);
     } else {
       blocks.push(nullBlock);
     }

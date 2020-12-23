@@ -1,7 +1,10 @@
 // eslint-disable no-unused-vars
 import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
 import { catchErrors, parseIncomingDate, logError } from './utils';
-import { buildSlashResponse, getDailyAutoMessage } from './fabricator';
+import { buildSlashResponse, getDailyAutoMessage, getHolidayMessage } from './fabricator';
+
+dayjs.extend(isBetween);
 
 const { App, ExpressReceiver } = require('@slack/bolt');
 const { CronJob } = require('cron');
@@ -75,22 +78,45 @@ const job = new CronJob(
   '00 01 08 * * 1-5',
   async () => {
     const today = dayjs().format('MMMM DD, YYYY');
-    let [content, contentErr] = await catchErrors(getDailyAutoMessage());
-    if (contentErr) {
-      content = errBlocks;
-      contentErr += `CronJob @ ${Date.now()}`;
-      logError(contentErr);
+    // If today is between Dec 24 and Jan 1 don't send regular message
+    const isHoliday = dayjs().isBetween('2020-12-24', '2021-01-01', null, '[]');
+    if (isHoliday) {
+      if (dayjs().isSame('2020-12-24', 'day')) {
+        // If day is Dec 24, return happy holidays message.
+        let [content, contentErr] = await catchErrors(getHolidayMessage());
+        if (contentErr) {
+          content = errBlocks;
+          contentErr += `CronJob @ ${Date.now()}`;
+          logError(contentErr);
+        }
+        app.client.chat.postMessage({
+          channel: process.env.SLACK_CHANNEL,
+          token: process.env.SLACK_BOT_TOKEN,
+          blocks: content.blocks,
+          text: `Flatiron event update for ${today}`
+        });
+
+        // eslint-disable-next-line no-console
+        console.log(`✨ Daily #fi-events message sent for ${today}.`);
+      }
+    } else {
+      let [content, contentErr] = await catchErrors(getDailyAutoMessage());
+      if (contentErr) {
+        content = errBlocks;
+        contentErr += `CronJob @ ${Date.now()}`;
+        logError(contentErr);
+      }
+
+      app.client.chat.postMessage({
+        channel: process.env.SLACK_CHANNEL,
+        token: process.env.SLACK_BOT_TOKEN,
+        blocks: content.blocks,
+        text: `Flatiron event update for ${today}`
+      });
+
+      // eslint-disable-next-line no-console
+      console.log(`✨ Daily #fi-events message sent for ${today}.`);
     }
-
-    app.client.chat.postMessage({
-      channel: process.env.SLACK_CHANNEL,
-      token: process.env.SLACK_BOT_TOKEN,
-      blocks: content.blocks,
-      text: `Flatiron event update for ${today}`
-    });
-
-    // eslint-disable-next-line no-console
-    console.log(`✨ Daily #fi-events message sent for ${today}.`);
   },
   null,
   true,

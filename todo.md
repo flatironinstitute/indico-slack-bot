@@ -1,7 +1,6 @@
 # Indico-Slack-Bot Notes
 
 ## Todo
-
 - Add healthchecks to the AWS instance.
 
 # Done
