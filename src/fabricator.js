@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import queryIndicoByDate from './api';
 import { logError, getNextDay } from './utils';
 import Payload from './payload';
@@ -16,7 +17,7 @@ function isValid(result) {
 
 /**
  * Confirm if an event is open by searching for closed keyword.
- * @param {array} keywords Array of strings.
+ * @param {array} result Indico result data object.
  * @return {boolean} openess Boolean.
  */
 function isOpen(result) {
@@ -29,6 +30,52 @@ function isOpen(result) {
 }
 
 /**
+ * Determine if today is the first weekday of the month.
+ * @return {boolean} isFirstWeekday Boolean.
+ */
+function isTodayFirstWeekdayOfTheMonth() {
+  let isFirstWeekday = false;
+  const todayOfMonth = dayjs().date();
+  let firstDay = dayjs().startOf('month');
+  // If first day of month is a weekday.
+  if (firstDay.day() > 0 && firstDay.day() < 6) {
+    if (todayOfMonth === 1) {
+      isFirstWeekday = true;
+    }
+  } else {
+    // Add days to get the first weekday of the month.
+    const add = firstDay.day() > 0 ? 2 : 1;
+    firstDay = firstDay.add(add, 'day');
+    // If today is the first weekday return true.
+    if (todayOfMonth === firstDay.date()) {
+      isFirstWeekday = true;
+    }
+  }
+  return isFirstWeekday;
+}
+
+/**
+ * Confirm if an event is rolling and whether it should be displayed if it is the first weekday of the month.
+ * @param {array} result Indico result data object.
+ * @return {boolean} Not rolling Boolean.
+ */
+function isNotRolling(result) {
+  let showResult = true;
+  let isRolling = false;
+  const isFirstWeekday = isTodayFirstWeekdayOfTheMonth();
+  if (result.keywords.length) {
+    const rollingArr = result.keywords.filter((keyword) =>
+      keyword.toLowerCase().includes('rolling')
+    );
+    isRolling = !rollingArr.length;
+  }
+  if (isRolling && !isFirstWeekday) {
+    showResult = false;
+  }
+  return showResult;
+}
+
+/**
  * Remove test events from Indico response object.
  * @param {object} res Indico event data API response.
  * @return {array} events Filtered event array.
@@ -37,7 +84,7 @@ function parseIndicoResponse(res) {
   if (res.results) {
     const events = [];
     res.results.forEach((result) => {
-      if (isValid(result) && isOpen(result)) {
+      if (isValid(result) && isOpen(result) && isNotRolling(result)) {
         events.push(result);
       }
     });
