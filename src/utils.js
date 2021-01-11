@@ -33,7 +33,7 @@ function formatTime(time) {
   // Remove leading 0 from hours.
   if (parseInt(arr[0], 10) < 10) {
     const stripped = arr[0].toString().replace(/^0+/, '');
-    parseInt(stripped, 10);
+    arr[0] = parseInt(stripped, 10);
   }
   if (arr[1] === '00') {
     ftime = `${arr[0]} ${arr[2]}`;
