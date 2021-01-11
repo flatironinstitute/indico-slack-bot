@@ -22,10 +22,10 @@ function parseIncomingDate(message) {
 function formatTime(time) {
   const arr = time.split(':');
   let ftime = '';
-  if (arr[0] === 12) {
+  if (arr[0] === '12') {
     arr[2] = 'PM';
-  } else if (arr[0] > 12) {
-    arr[0] -= 12;
+  } else if (parseInt(arr[0], 10) > 12) {
+    arr[0] = parseInt(arr[0], 10) - 12;
     arr[2] = 'PM';
   } else {
     arr[2] = 'AM';
