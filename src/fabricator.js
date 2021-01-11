@@ -84,7 +84,7 @@ function parseIndicoResponse(res) {
   if (res.results) {
     const events = [];
     res.results.forEach((result) => {
-      if (isValid(result) && isOpen(result)) {
+      if (isValid(result) && isOpen(result) && isNotRolling(result)) {
         events.push(result);
       }
     });
