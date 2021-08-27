@@ -98,6 +98,9 @@ function getCenterEmojiString(result) {
       case cat.includes('ccn'):
         emojiStr = ':ccn-circle:';
         break;
+      case cat.includes('mps'):
+        emojiStr = ':mps-circle:';
+        break;
       case cat.includes('star'):
         emojiStr = ':lodestar-circle:';
         break;
