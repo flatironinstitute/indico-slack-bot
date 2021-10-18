@@ -147,26 +147,28 @@ async function getHolidayMessage() {
  */
 async function getWeeklySCCMessage() {
   const payload = {
-    blocks: {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text:
-          ":wave: Hello, this is a reminder to please update the spreadsheet before tomorrow's SCC meeting. Thanks!"
-      },
-      accessory: {
-        type: 'button',
+    blocks: [
+      {
+        type: 'section',
         text: {
-          type: 'plain_text',
-          text: 'Open :memo:',
-          emoji: true
+          type: 'mrkdwn',
+          text:
+            ":wave: Hello, this is a reminder to please update the spreadsheet before tomorrow's SCC meeting. Thanks!"
         },
-        value: 'click_spreadsheet_link',
-        url:
-          'https://docs.google.com/spreadsheets/d/1kYEEHUI9i5G3kjbUP59dFBZkx9zT4bgfmyBnR4LWXuA/edit?usp=sharing',
-        action_id: 'button-action'
+        accessory: {
+          type: 'button',
+          text: {
+            type: 'plain_text',
+            text: 'Open :gsheet:',
+            emoji: true
+          },
+          value: 'click_spreadsheet_link',
+          url:
+            'https://docs.google.com/spreadsheets/d/1kYEEHUI9i5G3kjbUP59dFBZkx9zT4bgfmyBnR4LWXuA/edit?usp=sharing',
+          action_id: 'button-action'
+        }
       }
-    }
+    ]
   };
   return payload;
 }
