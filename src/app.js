@@ -2,7 +2,12 @@
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import { catchErrors, parseIncomingDate, logError } from './utils';
-import { buildSlashResponse, getDailyAutoMessage, getHolidayMessage } from './fabricator';
+import {
+  buildSlashResponse,
+  getDailyAutoMessage,
+  getHolidayMessage,
+  getWeeklySCCMessage
+} from './fabricator';
 
 dayjs.extend(isBetween);
 
@@ -74,7 +79,7 @@ app.command('/indico', async ({ command, ack, respond }) => {
  * or Sunday.
  *'00 01 08 * * 1-5'
  */
-const job = new CronJob(
+const jobEventBot = new CronJob(
   '00 01 08 * * 1-5',
   async () => {
     const today = dayjs().format('MMMM DD, YYYY');
@@ -122,7 +127,41 @@ const job = new CronJob(
   true,
   'America/New_York'
 );
-job.start();
+
+/*
+ * Cronjob runs every Monday in the private
+ * SCC channel at 04:01:00 PM to remind team
+ * to update group calendar.
+ *'00 01 16 * * 1'
+ */
+const jobSCC = new CronJob(
+  '00 01 16 * * 1',
+  async () => {
+    const today = dayjs().format('MMMM DD, YYYY');
+    let [content, contentErr] = await catchErrors(getWeeklySCCMessage());
+    if (contentErr) {
+      content = errBlocks;
+      contentErr += `CronJob @ ${Date.now()}`;
+      logError(contentErr);
+    }
+
+    app.client.chat.postMessage({
+      channel: process.env.SCC_CHANNEL,
+      token: process.env.SLACK_BOT_TOKEN,
+      blocks: content.blocks,
+      text: `SCC weekly reminder for ${today}`
+    });
+
+    // eslint-disable-next-line no-console
+    console.log(`✨ Weekly #fi_scc reminder sent for ${today}.`);
+  },
+  null,
+  true,
+  'America/New_York'
+);
+
+jobEventBot.start();
+jobSCC.start();
 
 (async () => {
   // Start the app
