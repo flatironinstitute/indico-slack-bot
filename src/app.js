@@ -39,8 +39,7 @@ const errBlocks = {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text:
-          "I'm sorry, but I'm unable to connect to Indico. Please <mailto:scicomp@flatironinstitute.org|contact the admin> or try again shortly."
+        text: "I'm sorry, but I'm unable to connect to Indico. Please <mailto:scicomp@flatironinstitute.org|contact the admin> or try again shortly."
       }
     }
   ]
@@ -135,7 +134,7 @@ const jobEventBot = new CronJob(
  *'00 01 16 * * 1'
  */
 const jobSCC = new CronJob(
-  '00 01 16 * * 1',
+  '00 20 16 * * 1',
   async () => {
     const today = dayjs().format('MMMM DD, YYYY');
     let [content, contentErr] = await catchErrors(getWeeklySCCMessage());

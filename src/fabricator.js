@@ -152,8 +152,7 @@ async function getWeeklySCCMessage() {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text:
-            ":wave: Hello, this is a reminder to please update the spreadsheet before tomorrow's SCC meeting. Thanks!"
+          text: ":wave: Hello, this is a reminder to please update the spreadsheet before tomorrow's SCC meeting. Thanks!"
         },
         accessory: {
           type: 'button',
@@ -163,8 +162,7 @@ async function getWeeklySCCMessage() {
             emoji: true
           },
           value: 'click_spreadsheet_link',
-          url:
-            'https://docs.google.com/spreadsheets/d/1kYEEHUI9i5G3kjbUP59dFBZkx9zT4bgfmyBnR4LWXuA/edit?usp=sharing',
+          url: 'https://docs.google.com/spreadsheets/d/1kYEEHUI9i5G3kjbUP59dFBZkx9zT4bgfmyBnR4LWXuA/edit?usp=sharing',
           action_id: 'button-action'
         }
       }

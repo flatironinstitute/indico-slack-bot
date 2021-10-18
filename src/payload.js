@@ -78,8 +78,7 @@ export default class Payload {
       elements: [
         {
           type: 'mrkdwn',
-          text:
-            ':pushpin: Do you have something to include in #fi-events? Contact <mailto:aschneider@flatironinstitute.org?subject=Add Event to Indico via #fi-events |*Flatiron Admin*>.'
+          text: ':pushpin: Do you have something to include in #fi-events? Contact <mailto:aschneider@flatironinstitute.org?subject=Add Event to Indico via #fi-events |*Flatiron Admin*>.'
         }
       ]
     };
@@ -87,16 +86,14 @@ export default class Payload {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text:
-          '`12/24 - 1/3` :snowflake: <https://simonsfoundation.interactgo.com/Interact/Pages/Content/Document.aspx?id=7443 |*Holiday Office Closure*> :snowflake:'
+        text: '`12/24 - 1/3` :snowflake: <https://simonsfoundation.interactgo.com/Interact/Pages/Content/Document.aspx?id=7443 |*Holiday Office Closure*> :snowflake:'
       }
     };
     const holidayBlock2 = {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text:
-          'Daily update posts are suspended until January 4th. (Even bots :indico: need a break.) Happy holidays - see you next year! :confetti_ball:'
+        text: 'Daily update posts are suspended until January 4th. (Even bots :indico: need a break.) Happy holidays - see you next year! :confetti_ball:'
       }
     };
     const blocks = [];

@@ -28,8 +28,7 @@ export default class Modal {
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text:
-              'Daily `#fi-events` posts originate in <https://indico.flatironinstitute.org/| Indico>, the event management system used at Flatiron Institute for conferences, workshops, and meetings. \n \n If you need assistance adding an event to Indico, please contact your Center Administration Manager or <mailto:aschneider@flatironinstitute.org | Abraham Schneider> for Institute-wide events.'
+            text: 'Daily `#fi-events` posts originate in <https://indico.flatironinstitute.org/| Indico>, the event management system used at Flatiron Institute for conferences, workshops, and meetings. \n \n If you need assistance adding an event to Indico, please contact your Center Administration Manager or <mailto:aschneider@flatironinstitute.org | Abraham Schneider> for Institute-wide events.'
           }
         }
       ]
