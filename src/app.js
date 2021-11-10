@@ -4,6 +4,7 @@ import isBetween from 'dayjs/plugin/isBetween';
 import { catchErrors, parseIncomingDate, logError } from './utils';
 import {
   buildSlashResponse,
+  buildGreetingResponse,
   getDailyAutoMessage,
   getHolidayMessage,
   getWeeklySCCMessage
@@ -46,9 +47,11 @@ const errBlocks = {
 };
 
 app.message('hello', async ({ message, say }) => {
-  await say(
-    `Hello <@${message.user}>! I'm the Indico bot. :indico: I post daily updates to the \`#fi-events\` channel about what's going on at Flatiron. \n You can also ask me about future events by typing  \`/indico\`  followed by a date. `
-  ).catch((e) => logError(e));
+  const [reply, replyErr] = buildGreetingResponse(message);
+  if (replyErr) {
+    logError(replyErr);
+  }
+  await catchErrors(say(reply)).catch((e) => logError(e));
 });
 
 // The slash command provides event info for a specific date.

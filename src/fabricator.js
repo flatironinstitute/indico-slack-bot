@@ -107,6 +107,16 @@ async function buildSlashResponse(day) {
 }
 
 /**
+ * Function to return a hello greeting with information on Slackbot.
+ * @param {object} message Content of Slack message.
+ * @return {string} reply Formatted single line of slack message.
+ */
+async function buildGreetingResponse(message) {
+  const reply = `Hello <@${message.user}>! I'm the Indico bot. :indico: I post daily updates to the \`#fi-events\` channel about what's going on at Flatiron. \n You can also ask me about future events by typing  \`/indico\`  followed by a date. `;
+  return reply;
+}
+
+/**
  * Function to gather indico info and organize daily auto messages.
  * @return {object} payload The payload text for a slack response.
  */
@@ -173,6 +183,7 @@ async function getWeeklySCCMessage() {
 
 export {
   buildSlashResponse,
+  buildGreetingResponse,
   parseIndicoResponse,
   getDailyAutoMessage,
   getHolidayMessage,
