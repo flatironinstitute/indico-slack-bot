@@ -1,7 +1,8 @@
 # Indico-Slack-Bot Notes
 
 ## Todo
-- Add healthchecks to the AWS instance.
+- Move to k8s
+- Update holiday message for 2021
 
 # Done
 
@@ -17,6 +18,8 @@
 - Change frequency to daily from 2 min testing
 - How-to sheet
 - Calendar subscriptions
+- Add landing page with express reciever
+- USA datetime formatting
 
 # Icebox
 
@@ -24,18 +27,13 @@
 - Add App Home
 - Add modal for content submission.
 - Write more tests
-- Add landing page with express reciever
-- USA datetime formatting
-- DNS to Balmes at .flatironinstitute.org (ancible and IT via email).
-- Convert to AWS Lambda?
 
 # Misc Notes:
 
-/\*\* Alternate Payload Styling
+_Alternate Payload Styling_
 
 - _Tuesday, September 22:_ < url | 160 Speaker Series: Grant Sanderson>
 - Start: 4: 00 PM September 22 2020
 - End: 5: 00 PM September 22 2020
 - Location: Zoom Webinar
 - Contact: ewood @simonsfoundation.org
-  \*/

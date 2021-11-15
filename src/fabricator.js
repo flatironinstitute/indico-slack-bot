@@ -152,7 +152,7 @@ async function getWeeklySCCMessage() {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: ":wave: Hello, this is a reminder to please update the spreadsheet before tomorrow's SCC meeting. Remember that the meeting's new time is **1:30PM**. Thanks!"
+          text: ":wave: Hello, this is a reminder to please update the spreadsheet before tomorrow's SCC meeting. Remember that the meeting's new time is *1:30PM*. Thanks!"
         },
         accessory: {
           type: 'button',

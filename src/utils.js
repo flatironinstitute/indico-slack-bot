@@ -132,6 +132,17 @@ function getNextDay(day) {
   return next;
 }
 
+function adjustForDST() {
+	const year = new Date().getFullYear();
+  const jan = new Date(year, 0, 1);
+  const jul = new Date(year, 6, 1);
+  const stdTZOffset = Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+  
+  const currentTZOffset = new Date().getTimezoneOffset();
+  return currentTZOffset < stdTZOffset;
+	
+}
+
 export {
   parseIncomingDate,
   formatTime,

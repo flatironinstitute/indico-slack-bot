@@ -83,7 +83,7 @@ const jobEventBot = new CronJob(
   async () => {
     const today = dayjs().format('MMMM DD, YYYY');
     // If today is between Dec 24 and Jan 1 don't send regular message
-    const isHoliday = dayjs().isBetween('2020-12-24', '2021-01-01', null, '[]');
+    const isHoliday = dayjs().isBetween('2020-12-24', '2021-01-02', null, '[]') || dayjs().isBetween('2020-11-25', '2021-11-28', null, '[]');
     if (isHoliday) {
       if (dayjs().isSame('2020-12-24', 'day')) {
         // If day is Dec 24, return happy holidays message.
