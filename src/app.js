@@ -52,8 +52,7 @@ const errBlocks = {
 };
 
 /**
- * Determines if it is during Daylight Savings Time
- * @return {boolean} is it currently in the warmer months of DST.
+ * Responds to hello typed in any channel it is added to.
  */
 app.message('hello', async ({ message, say }) => {
   await say(
@@ -61,7 +60,9 @@ app.message('hello', async ({ message, say }) => {
   ).catch((e) => logError(e));
 });
 
-// The slash command provides event info for a specific date.
+/**
+ * Slash command to provide event info for a specific date.
+ */
 app.command('/indico', async ({ command, ack, respond }) => {
   // Acknowledge command request
   await ack();
@@ -82,10 +83,15 @@ app.command('/indico', async ({ command, ack, respond }) => {
   await respond(param).catch((e) => logError(e));
 });
 
-async function sendDailyMessage(){
+/**
+ * Send daily event message to designated channel.
+ */
+async function sendDailyMessage() {
   const today = dayjs().format('MMMM DD, YYYY');
-  // If today is between Dec 24 and Jan 1 don't send regular message
-  const isHoliday = dayjs().isBetween('2020-12-24', '2021-01-02', null, '[]') || dayjs().isBetween('2020-11-25', '2021-11-28', null, '[]');
+  // If today is during holidays don't send regular message
+  const isHoliday =
+    dayjs().isBetween('2020-12-24', '2021-01-02', null, '[]') ||
+    dayjs().isBetween('2020-11-25', '2021-11-28', null, '[]');
   if (isHoliday) {
     if (dayjs().isSame('2020-12-24', 'day')) {
       // If day is Dec 24, return happy holidays message.
@@ -122,8 +128,12 @@ async function sendDailyMessage(){
 
     // eslint-disable-next-line no-console
     console.log(`✨ Daily #fi-events message sent for ${today}.`);
+  }
 }
 
+/**
+ * Send weekly SCC reminder message to update spreadsheet.
+ */
 async function sendSCCMessage() {
   const today = dayjs().format('MMMM DD, YYYY');
   let [content, contentErr] = await catchErrors(getWeeklySCCMessage());
@@ -153,11 +163,14 @@ async function sendSCCMessage() {
 const jobEventBot = new CronJob(
   '00 01 08 * * 1-5',
   async () => {
-    if (isDST){
+    if (isDST) {
       sendDailyMessage();
     } else {
-      console.log("✉️ Delayed for one hour due to DST.")
-      setTimeout(() => {sendDailyMessage()}, 3600000);
+      // eslint-disable-next-line no-console
+      console.log('✉️ Delayed for one hour due to DST.');
+      setTimeout(() => {
+        sendDailyMessage();
+      }, 3600000);
     }
   },
   null,
@@ -174,11 +187,14 @@ const jobEventBot = new CronJob(
 const jobSCC = new CronJob(
   '00 20 16 * * 1',
   async () => {
-    if (isDST){
+    if (isDST) {
       sendSCCMessage();
     } else {
-      console.log("✉️ Delayed for one hour due to DST.")
-      setTimeout(() => {sendSCCMessage()}, 3600000);
+      // eslint-disable-next-line no-console
+      console.log('✉️ Delayed for one hour due to DST.');
+      setTimeout(() => {
+        sendSCCMessage();
+      }, 3600000);
     }
   },
   null,
@@ -195,5 +211,5 @@ jobSCC.start();
   const version = process.env.npm_package_version || 'v.v.v';
   await app.start(port);
   /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
-  console.warn(`🤖 Indico Bot ${version} is running on ${port} with pm2 startup.`);
+  console.warn(`🤖 Indico Bot ${version} is running on ${port}.`);
 })();

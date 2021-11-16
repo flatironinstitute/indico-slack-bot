@@ -137,11 +137,11 @@ function getNextDay(day) {
  * @return {boolean} is it currently in the warmer months of DST.
  */
 function isDST() {
-	const year = new Date().getFullYear();
+  const year = new Date().getFullYear();
   const jan = new Date(year, 0, 1);
   const jul = new Date(year, 6, 1);
   const stdTZOffset = Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
-  
+
   const currentTZOffset = new Date().getTimezoneOffset();
   return currentTZOffset < stdTZOffset;
 }
@@ -154,5 +154,5 @@ export {
   convertHtmltoPlainText,
   getCenterEmojiString,
   getNextDay,
-  isDST,
+  isDST
 };
