@@ -1,7 +1,7 @@
 // eslint-disable no-unused-vars
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
-import { catchErrors, parseIncomingDate, logError } from './utils';
+import { catchErrors, parseIncomingDate, logError, isDST } from './utils';
 import {
   buildSlashResponse,
   getDailyAutoMessage,
@@ -17,18 +17,24 @@ const path = require('path');
 
 require('dotenv').config();
 
-// Create a Bolt Receiver
+/**
+ * Create a Bolt reciever
+ */
 const receiver = new ExpressReceiver({
   signingSecret: process.env.SLACK_SIGNING_SECRET
 });
 
-// Initialize app
+/**
+ * Initialize app
+ */
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
   receiver
 });
 
-// landing page
+/**
+ * Create a landing page
+ */
 receiver.router.get('/', (req, res) => {
   res.sendFile(path.join(`${__dirname}/index.html`));
 });
@@ -45,6 +51,10 @@ const errBlocks = {
   ]
 };
 
+/**
+ * Determines if it is during Daylight Savings Time
+ * @return {boolean} is it currently in the warmer months of DST.
+ */
 app.message('hello', async ({ message, say }) => {
   await say(
     `Hello <@${message.user}>! I'm the Indico bot. :indico: I post daily updates to the \`#fi-events\` channel about what's going on at Flatiron. \n You can also ask me about future events by typing  \`/indico\`  followed by a date. `
@@ -72,45 +82,19 @@ app.command('/indico', async ({ command, ack, respond }) => {
   await respond(param).catch((e) => logError(e));
 });
 
-/*
- * Cronjob runs every weekday (Monday through Friday)
- * at 08:01:00 AM. It does not run on Saturday
- * or Sunday.
- *'00 01 08 * * 1-5'
- */
-const jobEventBot = new CronJob(
-  '00 01 08 * * 1-5',
-  async () => {
-    const today = dayjs().format('MMMM DD, YYYY');
-    // If today is between Dec 24 and Jan 1 don't send regular message
-    const isHoliday = dayjs().isBetween('2020-12-24', '2021-01-02', null, '[]') || dayjs().isBetween('2020-11-25', '2021-11-28', null, '[]');
-    if (isHoliday) {
-      if (dayjs().isSame('2020-12-24', 'day')) {
-        // If day is Dec 24, return happy holidays message.
-        let [content, contentErr] = await catchErrors(getHolidayMessage());
-        if (contentErr) {
-          content = errBlocks;
-          contentErr += `CronJob @ ${Date.now()}`;
-          logError(contentErr);
-        }
-        app.client.chat.postMessage({
-          channel: process.env.SLACK_CHANNEL,
-          token: process.env.SLACK_BOT_TOKEN,
-          blocks: content.blocks,
-          text: `Flatiron event update for ${today}`
-        });
-
-        // eslint-disable-next-line no-console
-        console.log(`✨ Daily #fi-events message sent for ${today}.`);
-      }
-    } else {
-      let [content, contentErr] = await catchErrors(getDailyAutoMessage());
+async function sendDailyMessage(){
+  const today = dayjs().format('MMMM DD, YYYY');
+  // If today is between Dec 24 and Jan 1 don't send regular message
+  const isHoliday = dayjs().isBetween('2020-12-24', '2021-01-02', null, '[]') || dayjs().isBetween('2020-11-25', '2021-11-28', null, '[]');
+  if (isHoliday) {
+    if (dayjs().isSame('2020-12-24', 'day')) {
+      // If day is Dec 24, return happy holidays message.
+      let [content, contentErr] = await catchErrors(getHolidayMessage());
       if (contentErr) {
         content = errBlocks;
         contentErr += `CronJob @ ${Date.now()}`;
         logError(contentErr);
       }
-
       app.client.chat.postMessage({
         channel: process.env.SLACK_CHANNEL,
         token: process.env.SLACK_BOT_TOKEN,
@@ -121,6 +105,60 @@ const jobEventBot = new CronJob(
       // eslint-disable-next-line no-console
       console.log(`✨ Daily #fi-events message sent for ${today}.`);
     }
+  } else {
+    let [content, contentErr] = await catchErrors(getDailyAutoMessage());
+    if (contentErr) {
+      content = errBlocks;
+      contentErr += `CronJob @ ${Date.now()}`;
+      logError(contentErr);
+    }
+
+    app.client.chat.postMessage({
+      channel: process.env.SLACK_CHANNEL,
+      token: process.env.SLACK_BOT_TOKEN,
+      blocks: content.blocks,
+      text: `Flatiron event update for ${today}`
+    });
+
+    // eslint-disable-next-line no-console
+    console.log(`✨ Daily #fi-events message sent for ${today}.`);
+}
+
+async function sendSCCMessage() {
+  const today = dayjs().format('MMMM DD, YYYY');
+  let [content, contentErr] = await catchErrors(getWeeklySCCMessage());
+  if (contentErr) {
+    content = errBlocks;
+    contentErr += `CronJob @ ${Date.now()}`;
+    logError(contentErr);
+  }
+
+  app.client.chat.postMessage({
+    channel: process.env.SCC_CHANNEL,
+    token: process.env.SLACK_BOT_TOKEN,
+    blocks: content.blocks,
+    text: `SCC weekly reminder for ${today}`
+  });
+
+  // eslint-disable-next-line no-console
+  console.log(`✨ Weekly #fi_scc reminder sent for ${today}.`);
+}
+
+/*
+ * Cronjob runs every weekday (Monday through Friday)
+ * at 08:01:00 AM. It does not run on Saturday
+ * or Sunday.
+ *'00 01 08 * * 1-5'
+ */
+const jobEventBot = new CronJob(
+  '00 01 08 * * 1-5',
+  async () => {
+    if (isDST){
+      sendDailyMessage();
+    } else {
+      console.log("✉️ Delayed for one hour due to DST.")
+      setTimeout(() => {sendDailyMessage()}, 3600000);
+    }
   },
   null,
   true,
@@ -129,30 +167,19 @@ const jobEventBot = new CronJob(
 
 /*
  * Cronjob runs every Monday in the private
- * SCC channel at 04:01:00 PM to remind team
+ * SCC channel at 04:20:00 PM to remind team
  * to update group calendar.
  *'00 01 16 * * 1'
  */
 const jobSCC = new CronJob(
   '00 20 16 * * 1',
   async () => {
-    const today = dayjs().format('MMMM DD, YYYY');
-    let [content, contentErr] = await catchErrors(getWeeklySCCMessage());
-    if (contentErr) {
-      content = errBlocks;
-      contentErr += `CronJob @ ${Date.now()}`;
-      logError(contentErr);
+    if (isDST){
+      sendSCCMessage();
+    } else {
+      console.log("✉️ Delayed for one hour due to DST.")
+      setTimeout(() => {sendSCCMessage()}, 3600000);
     }
-
-    app.client.chat.postMessage({
-      channel: process.env.SCC_CHANNEL,
-      token: process.env.SLACK_BOT_TOKEN,
-      blocks: content.blocks,
-      text: `SCC weekly reminder for ${today}`
-    });
-
-    // eslint-disable-next-line no-console
-    console.log(`✨ Weekly #fi_scc reminder sent for ${today}.`);
   },
   null,
   true,

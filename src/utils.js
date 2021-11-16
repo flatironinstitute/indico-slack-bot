@@ -132,7 +132,11 @@ function getNextDay(day) {
   return next;
 }
 
-function adjustForDST() {
+/**
+ * Determines if it is during Daylight Savings Time
+ * @return {boolean} is it currently in the warmer months of DST.
+ */
+function isDST() {
 	const year = new Date().getFullYear();
   const jan = new Date(year, 0, 1);
   const jul = new Date(year, 6, 1);
@@ -140,7 +144,6 @@ function adjustForDST() {
   
   const currentTZOffset = new Date().getTimezoneOffset();
   return currentTZOffset < stdTZOffset;
-	
 }
 
 export {
@@ -150,5 +153,6 @@ export {
   catchErrors,
   convertHtmltoPlainText,
   getCenterEmojiString,
-  getNextDay
+  getNextDay,
+  isDST,
 };
