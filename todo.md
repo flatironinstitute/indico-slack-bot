@@ -2,7 +2,6 @@
 
 ## Todo
 - Move to k8s
-- Update holiday message for 2021
 
 # Done
 
@@ -20,6 +19,7 @@
 - Calendar subscriptions
 - Add landing page with express reciever
 - USA datetime formatting
+- Update holiday message for 2021
 
 # Icebox
 
