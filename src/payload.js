@@ -86,14 +86,14 @@ export default class Payload {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: '`12/24 - 1/3` :snowflake: <https://simonsfoundation.interactgo.com/Interact/Pages/Content/Document.aspx?id=7443 |*Holiday Office Closure*> :snowflake:'
+        text: '`12/24 - 1/3` :snowflake: <https://simonsfoundation.interactgo.com/Utilities/Uploads/Handler/Uploader.ashx?area=composer&filename=2021+Scheduled+Closings_Final.pdf&fileguid=7bdeecc9-c711-4f90-8f27-e15d5ca63cc1 |*Holiday Office Closures *> :snowflake:'
       }
     };
     const holidayBlock2 = {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: 'Daily update posts are suspended until January 4th. (Even bots :indico: need a break.) Happy holidays - see you next year! :confetti_ball:'
+        text: 'Daily update posts are suspended until January 3rd. (Even bots :indico: need a break.) Happy holidays - see you next year! :confetti_ball:'
       }
     };
     const blocks = [];

@@ -42,6 +42,7 @@ slack-token
 
 # Environment variables
 .env
+.env.list
 
 # Built files
 dist/
