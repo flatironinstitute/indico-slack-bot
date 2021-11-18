@@ -49,6 +49,7 @@ function formatTime(time) {
  */
 function logError(error) {
   /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
+  console.error('⚠️', error);
   throw new Error(error);
 }
 
@@ -133,7 +134,7 @@ function getNextDay(day) {
 }
 
 /**
- * Determines if it is during Daylight Savings Time
+ * Determines if it is during Daylight Savings Time (aka Summer)
  * @return {boolean} is it currently in the warmer months of DST.
  */
 function isDST() {

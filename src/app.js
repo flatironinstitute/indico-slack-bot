@@ -55,7 +55,7 @@ const errBlocks = {
 /**
  * Responds to hello typed in any channel it is added to.
  */
-app.message('hello', async ({ message, say }) => {
+app.message('hello indico', async ({ message, say }) => {
   const [reply, replyErr] = buildGreetingResponse(message);
   if (replyErr) {
     logError(replyErr);
@@ -93,10 +93,11 @@ async function sendDailyMessage() {
   const today = dayjs().format('MMMM DD, YYYY');
   // If today is during holidays don't send regular message
   const isHoliday =
-    dayjs().isBetween('2020-12-24', '2021-01-02', null, '[]') ||
-    dayjs().isBetween('2020-11-25', '2021-11-28', null, '[]');
+    dayjs().isBetween('2021-12-24', '2022-01-02', null, '[]') ||
+    dayjs().isBetween('2021-11-25', '2021-11-28', null, '[]');
+
   if (isHoliday) {
-    if (dayjs().isSame('2020-12-24', 'day')) {
+    if (dayjs().isSame('2021-12-24', 'day')) {
       // If day is Dec 24, return happy holidays message.
       let [content, contentErr] = await catchErrors(getHolidayMessage());
       if (contentErr) {
@@ -113,6 +114,9 @@ async function sendDailyMessage() {
 
       // eslint-disable-next-line no-console
       console.log(`✨ Daily #fi-events message sent for ${today}.`);
+    } else {
+      // eslint-disable-next-line no-console
+      console.log(`❄️ Holiday Break: #fi-events message canceled for ${today}.`);
     }
   } else {
     let [content, contentErr] = await catchErrors(getDailyAutoMessage());
@@ -166,11 +170,13 @@ async function sendSCCMessage() {
 const jobEventBot = new CronJob(
   '00 01 08 * * 1-5',
   async () => {
+    // eslint-disable-next-line no-console
+    console.log(`🤖 jobEventBot triggered.`);
     if (isDST) {
       sendDailyMessage();
     } else {
       // eslint-disable-next-line no-console
-      console.log('✉️ Delayed for one hour due to DST.');
+      console.log('⏰ Delayed for one hour due to DST.');
       setTimeout(() => {
         sendDailyMessage();
       }, 3600000);
@@ -190,11 +196,13 @@ const jobEventBot = new CronJob(
 const jobSCC = new CronJob(
   '00 20 16 * * 1',
   async () => {
+    // eslint-disable-next-line no-console
+    console.log(`🤖 jobSCC triggered.}`);
     if (isDST) {
       sendSCCMessage();
     } else {
       // eslint-disable-next-line no-console
-      console.log('✉️ Delayed for one hour due to DST.');
+      console.log('⏰ Delayed for one hour due to DST.');
       setTimeout(() => {
         sendSCCMessage();
       }, 3600000);
