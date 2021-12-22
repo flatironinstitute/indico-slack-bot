@@ -1,10 +1,10 @@
 # Indico-Slack-Bot Notes
 
 ## Todo
-- Move to k8s
 
 # Done
 
+- Move to k8s
 - ESLint
 - Babel / packaging
 - New Lucy formatting on the payload js.
