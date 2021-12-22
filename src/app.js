@@ -143,22 +143,30 @@ async function sendDailyMessage() {
  */
 async function sendSCCMessage() {
   const today = dayjs().format('MMMM DD, YYYY');
-  let [content, contentErr] = await catchErrors(getWeeklySCCMessage());
-  if (contentErr) {
-    content = errBlocks;
-    contentErr += `CronJob @ ${Date.now()}`;
-    logError(contentErr);
+
+  const isHoliday = dayjs().isBetween('2021-12-24', '2022-01-10', null, '[]');
+
+  if (isHoliday) {
+    // eslint-disable-next-line no-console
+    console.log(`❄️ Holiday Break: Weekly SCC message canceled for ${today}.`);
+  } else {
+    let [content, contentErr] = await catchErrors(getWeeklySCCMessage());
+    if (contentErr) {
+      content = errBlocks;
+      contentErr += `CronJob @ ${Date.now()}`;
+      logError(contentErr);
+    }
+
+    app.client.chat.postMessage({
+      channel: process.env.SCC_CHANNEL,
+      token: process.env.SLACK_BOT_TOKEN,
+      blocks: content.blocks,
+      text: `SCC weekly reminder for ${today}`
+    });
+
+    // eslint-disable-next-line no-console
+    console.log(`✨ Weekly #fi_scc reminder sent for ${today}.`);
   }
-
-  app.client.chat.postMessage({
-    channel: process.env.SCC_CHANNEL,
-    token: process.env.SLACK_BOT_TOKEN,
-    blocks: content.blocks,
-    text: `SCC weekly reminder for ${today}`
-  });
-
-  // eslint-disable-next-line no-console
-  console.log(`✨ Weekly #fi_scc reminder sent for ${today}.`);
 }
 
 /*
@@ -189,12 +197,12 @@ const jobEventBot = new CronJob(
 
 /*
  * Cronjob runs every Monday in the private
- * SCC channel at 04:20:00 PM to remind team
+ * SCC channel at 02:00:00 PM to remind team
  * to update group calendar.
- *'00 01 16 * * 1'
+ *'00 00 14 * * 1'
  */
 const jobSCC = new CronJob(
-  '00 20 16 * * 1',
+  '00 00 14 * * 1',
   async () => {
     // eslint-disable-next-line no-console
     console.log(`🤖 jobSCC triggered.}`);

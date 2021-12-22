@@ -172,7 +172,7 @@ async function getWeeklySCCMessage() {
             emoji: true
           },
           value: 'click_spreadsheet_link',
-          url: 'https://docs.google.com/spreadsheets/d/1kYEEHUI9i5G3kjbUP59dFBZkx9zT4bgfmyBnR4LWXuA/edit?usp=sharing',
+          url: 'https://docs.google.com/spreadsheets/d/1bCtMKGczndMpudOdaksJs1kZx7jQzTVw5AP83yIHNZ4/edit?usp=sharing',
           action_id: 'button-action'
         }
       }
