@@ -35,6 +35,12 @@ To start _ISB_ locally run:
 
 `npm run start`
 
+
+### Remote Hosting
+
+ISB is hosted on an AWS EC2 instance using [PM2 process manager][pm2]. Once you have accessed the AWS instance, you must remember to run `npm run build` before calling the pm2 process script.
+
+
 ### Additional Documentation
 
 - [Indico][indico-docs]
@@ -48,6 +54,7 @@ To start _ISB_ locally run:
 [ngrok]: https://ngrok.com/
 [eslint]: https://eslint.org/
 [babel]: https://babeljs.io/docs/en/
+[pm2]: https://pm2.keymetrics.io/
 
 ## Contributing
 
