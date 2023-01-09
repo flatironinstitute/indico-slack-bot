@@ -156,6 +156,7 @@ async function getHolidayMessage() {
  * @return {object} payload The payload text for a slack response.
  */
 async function getWeeklySCCMessage() {
+  const URL = process.env.SCC_SPREADSHEET || 'sheets.google.com';
   const payload = {
     blocks: [
       {
@@ -172,7 +173,7 @@ async function getWeeklySCCMessage() {
             emoji: true
           },
           value: 'click_spreadsheet_link',
-          url: 'https://docs.google.com/spreadsheets/d/1bCtMKGczndMpudOdaksJs1kZx7jQzTVw5AP83yIHNZ4/edit?usp=sharing',
+          url: URL,
           action_id: 'button-action'
         }
       }
