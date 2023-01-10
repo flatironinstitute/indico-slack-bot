@@ -1,6 +1,6 @@
 {
   "name": "indico-slack-bot",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "description": "Bot that sends daily updates of Indico events to Slack.",
   "main": "app.js",
   "scripts": {
