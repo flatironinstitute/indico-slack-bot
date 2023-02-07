@@ -196,13 +196,14 @@ const jobEventBot = new CronJob(
 );
 
 /*
- * Cronjob runs every Monday in the private
- * SCC channel at 02:00:00 PM to remind team
+ * Cronjob runs every at a given time 
+ * (or Monday 02:00:00 PM if not given) in 
+ * the private SCC channel to remind team 
  * to update group calendar.
  *'00 00 14 * * 1'
  */
 const jobSCC = new CronJob(
-  '00 00 14 * * 1',
+  process.env.SCC_CRONJOB_SPEC || '00 00 14 * * 1',
   async () => {
     // eslint-disable-next-line no-console
     console.log(`🤖 jobSCC triggered.}`);

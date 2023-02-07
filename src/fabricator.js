@@ -157,13 +157,15 @@ async function getHolidayMessage() {
  */
 async function getWeeklySCCMessage() {
   const URL = process.env.SCC_SPREADSHEET || 'sheets.google.com';
+  const weekday = process.env.SCC_MEETING_WEEKDAY || 'tomorrow';
+  const time = process.env.SCC_MEETING_TIME || '1:30PM';
   const payload = {
     blocks: [
       {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: ":wave: Hello, this is a reminder to please update the spreadsheet before tomorrow's SCC meeting. Remember that the meeting's new time is *1:30PM*. Thanks!"
+          text: ":wave: Hello, this is a reminder to please update the spreadsheet before " + weekday "'s SCC meeting. Remember that the meeting's time is *" + time + "*. Thanks!"
         },
         accessory: {
           type: 'button',
