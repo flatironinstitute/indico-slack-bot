@@ -92,9 +92,7 @@ app.command('/indico', async ({ command, ack, respond }) => {
 async function sendDailyMessage() {
   const today = dayjs().format('MMMM DD, YYYY');
   // If today is during holidays don't send regular message
-  const isHoliday =
-    dayjs().isBetween('2021-12-24', '2022-01-02', null, '[]') ||
-    dayjs().isBetween('2021-11-25', '2021-11-28', null, '[]');
+  const isHoliday = true;
 
   if (isHoliday) {
     if (dayjs().isSame('2021-12-24', 'day')) {
